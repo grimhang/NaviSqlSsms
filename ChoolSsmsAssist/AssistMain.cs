@@ -9,6 +9,7 @@ namespace ChoolSsmsAssist
 {
     sealed class AssistMain
     {
+        public readonly string CMD_QUERY_EXECUTE = "Query.Execute";
 
         private Document document;
 

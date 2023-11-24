@@ -1,105 +1,292 @@
 ﻿using System;
-using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Task = System.Threading.Tasks.Task;
+using System.Collections.Generic;
+
+using EnvDTE;
+using EnvDTE80;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
 
 namespace ChoolSsmsAssist
 {
-    /// <summary>
-    /// Command handler
-    /// </summary>
-    internal sealed class AssistMain
+    sealed class AssistMain
     {
-        /// <summary>
-        /// Command ID.
-        /// </summary>
-        public const int CommandId = 0x0100;
 
-        /// <summary>
-        /// Command menu group (command set GUID).
-        /// </summary>
-        public static readonly Guid CommandSet = new Guid("fc414d62-d245-4820-8b28-e4378b61211b");
+        private Document document;
 
-        /// <summary>
-        /// VS Package that provides this command, not null.
-        /// </summary>
-        private readonly AsyncPackage package;
+        private EditPoint oldAnchor;
+        private EditPoint oldActivePoint;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AssistMain"/> class.
-        /// Adds our command handlers for menu (commands must exist in the command table file)
-        /// </summary>
-        /// <param name="package">Owner package, not null.</param>
-        /// <param name="commandService">Command service to add command to, not null.</param>
-        private AssistMain(AsyncPackage package, OleMenuCommandService commandService)
+        public AssistMain(DTE2 dte)
         {
-            this.package = package ?? throw new ArgumentNullException(nameof(package));
-            commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+            if (dte == null) throw new ArgumentNullException(nameof(dte));
 
-            var menuCommandID = new CommandID(CommandSet, CommandId);
-            var menuItem = new MenuCommand(this.Execute, menuCommandID);
-            commandService.AddCommand(menuItem);
+            document = dte.GetDocument();
+
+            SaveActiveAndAnchorPoints();
         }
 
-        /// <summary>
-        /// Gets the instance of the command.
-        /// </summary>
-        public static AssistMain Instance
+        private VirtualPoint GetCaretPoint()
         {
-            get;
-            private set;
+            var p = ((TextSelection)document.Selection).ActivePoint;
+
+            return new VirtualPoint(p);
         }
 
-        /// <summary>
-        /// Gets the service provider from the owner package.
-        /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
+        private string GetDocumentText()
         {
-            get
+            var content = string.Empty;
+            var selection = (TextSelection)document.Selection;
+
+            if (!selection.IsEmpty)
             {
-                return this.package;
+                content = selection.Text;
+            }
+            else
+            {
+                if (document.Object("TextDocument") is TextDocument doc)
+                {
+                    content = doc.StartPoint.CreateEditPoint().GetText(doc.EndPoint);
+                }
+            }
+
+            return content;
+        }
+
+        private void SaveActiveAndAnchorPoints()
+        {
+            var selection = (TextSelection)document.Selection;
+
+            oldAnchor = selection.AnchorPoint.CreateEditPoint();
+            oldActivePoint = selection.ActivePoint.CreateEditPoint();
+        }
+
+        private void RestoreActiveAndAnchorPoints()
+        {
+            var startPoint = new VirtualPoint(oldAnchor);
+            var endPoint = new VirtualPoint(oldActivePoint);
+
+            MakeSelection(startPoint, endPoint);
+        }
+
+        private void MakeSelection(VirtualPoint startPoint, VirtualPoint endPoint)
+        {
+            var selection = (TextSelection)document.Selection;
+
+            selection.MoveToLineAndOffset(startPoint.Line, startPoint.LineCharOffset);
+            selection.SwapAnchor();
+            selection.MoveToLineAndOffset(endPoint.Line, endPoint.LineCharOffset, true);
+        }
+
+        private bool ParseSqlFragments(string script, out TSqlScript sqlFragments)
+        {
+            IList<ParseError> errors;
+            TSql140Parser parser = new TSql140Parser(true);
+
+            using (System.IO.StringReader reader = new System.IO.StringReader(script))
+            {
+                sqlFragments = parser.Parse(reader, out errors) as TSqlScript;
+            }
+
+            return errors.Count == 0;
+        }
+
+        private IList<TSqlStatement> GetInnerStatements(TSqlStatement statement)
+        {
+            List<TSqlStatement> list = new List<TSqlStatement>();
+
+            if (statement is BeginEndBlockStatement block)
+            {
+                list.AddRange(block.StatementList.Statements);
+            }
+            else if (statement is IfStatement ifBlock)
+            {
+                if (ifBlock.ThenStatement != null)
+                {
+                    list.Add(ifBlock.ThenStatement);
+                }
+                if (ifBlock.ElseStatement != null)
+                {
+                    list.Add(ifBlock.ElseStatement);
+                }
+            }
+            else if (statement is WhileStatement whileBlock)
+            {
+                list.Add(whileBlock.Statement);
+            }
+
+            return list;
+        }
+
+        private bool IsCaretInsideStatement(TSqlStatement statement, VirtualPoint caret)
+        {
+            var ft = statement.ScriptTokenStream[statement.FirstTokenIndex];
+            var lt = statement.ScriptTokenStream[statement.LastTokenIndex];
+
+            if (caret.Line >= ft.Line && caret.Line <= lt.Line)
+            {
+                var isBeforeFirstToken = caret.Line == ft.Line && caret.LineCharOffset < ft.Column;
+                var isAfterLastToken = caret.Line == lt.Line && caret.LineCharOffset > lt.Column + lt.Text.Length;
+
+                if (!(isBeforeFirstToken || isAfterLastToken))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private TextBlock GetTextBlockFromStatement(TSqlStatement statement)
+        {
+            var ft = statement.ScriptTokenStream[statement.FirstTokenIndex];
+            var lt = statement.ScriptTokenStream[statement.LastTokenIndex];
+
+            return new TextBlock()
+            {
+                StartPoint = new VirtualPoint
+                {
+                    Line = ft.Line,
+                    LineCharOffset = ft.Column
+                },
+
+                EndPoint = new VirtualPoint
+                {
+                    Line = lt.Line,
+                    LineCharOffset = lt.Column + lt.Text.Length
+                }
+            };
+        }
+
+        private TextBlock FindCurrentStatement(IList<TSqlStatement> statements, VirtualPoint caret, ExecScope scope)
+        {
+            if (statements == null || statements.Count == 0)
+            {
+                return null;
+            }
+
+            foreach (var statement in statements)
+            {
+                if (scope == ExecScope.Inner)
+                {
+                    IList<TSqlStatement> statementList = GetInnerStatements(statement);
+
+                    TextBlock currentStatement = FindCurrentStatement(statementList, caret, scope);
+
+                    if (currentStatement != null)
+                    {
+                        return currentStatement;
+                    }
+                }
+
+                if (IsCaretInsideStatement(statement, caret))
+                {
+                    return GetTextBlockFromStatement(statement);
+                }
+            }
+
+            return null;
+        }
+
+        private void Exec()
+        {
+            document.DTE.ExecuteCommand(CMD_QUERY_EXECUTE);
+        }
+
+        private bool CanExecute()
+        {
+            try
+            {
+                var cmd = document.DTE.Commands.Item(CMD_QUERY_EXECUTE, -1);
+                return cmd.IsAvailable;
+            }
+            catch
+            { }
+
+            return false;
+        }
+
+        public void ExecuteStatement(ExecScope scope = ExecScope.Block)
+        {
+            if (!CanExecute())
+            {
+                return;
+            }
+
+            SaveActiveAndAnchorPoints();
+
+            if (!(document.Selection as TextSelection).IsEmpty)
+            {
+                Exec();
+            }
+            else
+            {
+                var script = GetDocumentText();
+                var caretPoint = GetCaretPoint();
+
+                bool success = ParseSqlFragments(script, out TSqlScript sqlScript);
+
+                if (success)
+                {
+                    TextBlock currentStatement = null;
+
+                    foreach (var batch in sqlScript?.Batches)
+                    {
+                        currentStatement = FindCurrentStatement(batch.Statements, caretPoint, scope);
+
+                        if (currentStatement != null)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (currentStatement != null)
+                    {
+                        // select the statement to be executed
+                        MakeSelection(currentStatement.StartPoint, currentStatement.EndPoint);
+
+                        // execute the statement
+                        Exec();
+
+                        // restore selection
+                        RestoreActiveAndAnchorPoints();
+                    }
+                }
+                else
+                {
+                    // there are syntax errors
+                    // execute anyway to show the errors
+                    Exec();
+                }
             }
         }
 
-        /// <summary>
-        /// Initializes the singleton instance of the command.
-        /// </summary>
-        /// <param name="package">Owner package, not null.</param>
-        public static async Task InitializeAsync(AsyncPackage package)
+        public class VirtualPoint
         {
-            // Switch to the main thread - the call to AddCommand in AssistMain's constructor requires
-            // the UI thread.
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
+            public int Line { get; set; }
+            public int LineCharOffset { get; set; }
 
-            OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
-            Instance = new AssistMain(package, commandService);
+            public VirtualPoint()
+            {
+                Line = 1;
+                LineCharOffset = 0;
+            }
+
+            public VirtualPoint(EnvDTE.TextPoint point)
+            {
+                Line = point.Line;
+                LineCharOffset = point.LineCharOffset;
+            }
         }
 
-        /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
-        private void Execute(object sender, EventArgs e)
+        public class TextBlock
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "AssistMain";
+            public VirtualPoint StartPoint { get; set; }
+            public VirtualPoint EndPoint { get; set; }
+        }
 
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.package,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        internal enum ExecScope
+        {
+            Block,
+            Inner
         }
     }
 }

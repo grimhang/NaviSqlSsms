@@ -256,7 +256,7 @@ namespace DaviSqlSsms
                         Exec();
 
                         // restore selection
-                        RestoreActiveAndAnchorPoints();
+                        //RestoreActiveAndAnchorPoints();       //여기가 핵심
                     }
                 }
                 else

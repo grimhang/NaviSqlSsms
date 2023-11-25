@@ -30,13 +30,25 @@ namespace DaviSqlSsms
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
-            //dte = (DTE2)ServiceProvider.GetServiceAsync(typeof(DTE));
-            //dte = package.GetServiceAsync(typeof(DTE)).ConfigureAwait(false) as DTE2;
 
-            var menuCommandID = new CommandID(CommandSet, ExecuteStatementCommandId);
+            //var menuCommandID = new CommandID(CommandSet, ExecuteStatementCommandId);
+            //var menuItem = new MenuCommand(this.Execute, menuCommandID);            
+            //commandService.AddCommand(menuItem);
+
+            CommandID menuCommandID;
+            OleMenuCommand menuCommand;
+
+            // Create execute current statement menu item
+            menuCommandID = new CommandID(CommandSet, ExecuteStatementCommandId);
             //var menuItem = new MenuCommand(this.Execute, menuCommandID);
-            var menuItem = new OleMenuCommand(this.Command_Exec, menuCommandID);
-            commandService.AddCommand(menuItem);
+            menuCommand = new OleMenuCommand(this.Command_Exec, menuCommandID);
+            commandService.AddCommand(menuCommand);
+
+            // Create execute inner satetement menu item
+            menuCommandID = new CommandID(CommandSet, ExecuteInnerStatementCommandId);
+            menuCommand = new OleMenuCommand(Command_SelectSql, menuCommandID);
+            //menuCommand.BeforeQueryStatus += Command_QueryStatus;
+            commandService.AddCommand(menuCommand);
         }
 
         /// <summary>
@@ -109,6 +121,17 @@ namespace DaviSqlSsms
                 var scope = GetScope(menuCommand.CommandID.ID);
 
                 executor.ExecuteStatement(scope);
+            }
+        }
+
+        private void Command_SelectSql(object sender, EventArgs e)
+        {
+            if (sender is OleMenuCommand menuCommand)
+            {
+                var executor = new Executor(dte);
+                var scope = GetScope(menuCommand.CommandID.ID);
+
+                executor.SelectStatement(scope);
             }
         }
     }

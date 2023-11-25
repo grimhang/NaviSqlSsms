@@ -7,7 +7,7 @@ using Microsoft.SqlServer.TransactSql.ScriptDom;
 
 namespace ChoolSsmsAssist
 {
-    sealed class AssistMain
+    sealed class Executor
     {
         public readonly string CMD_QUERY_EXECUTE = "Query.Execute";
 
@@ -16,7 +16,7 @@ namespace ChoolSsmsAssist
         private EditPoint oldAnchor;
         private EditPoint oldActivePoint;
 
-        public AssistMain(DTE2 dte)
+        public Executor(DTE2 dte)
         {
             if (dte == null) throw new ArgumentNullException(nameof(dte));
 

@@ -15,7 +15,7 @@ namespace ChoolSsmsAssist
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class AssistMainCommand
+    internal sealed class ExecutorCommand
     {
         public const int ExecuteStatementCommandId = 0x0100;
         public const int ExecuteInnerStatementCommandId = 0x0101;
@@ -26,7 +26,7 @@ namespace ChoolSsmsAssist
         private readonly AsyncPackage package;
         DTE2 dte;
 
-        private AssistMainCommand(AsyncPackage package, OleMenuCommandService commandService)
+        private ExecutorCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -42,7 +42,7 @@ namespace ChoolSsmsAssist
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static AssistMainCommand Instance
+        public static ExecutorCommand Instance
         {
             get;
             private set;
@@ -70,15 +70,15 @@ namespace ChoolSsmsAssist
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
-            Instance = new AssistMainCommand(package, commandService);
+            Instance = new ExecutorCommand(package, commandService);
         }
 
-        private AssistMain.ExecScope GetScope(int commandId)
+        private Executor.ExecScope GetScope(int commandId)
         {
-            var scope = AssistMain.ExecScope.Block;
+            var scope = Executor.ExecScope.Block;
             if (commandId == ExecuteInnerStatementCommandId)
             {
-                scope = AssistMain.ExecScope.Inner;
+                scope = Executor.ExecScope.Inner;
             }
             return scope;
         }
@@ -108,7 +108,7 @@ namespace ChoolSsmsAssist
                     dte = await package.GetServiceAsync(typeof(DTE)) as DTE2;
                 }
 
-                var executor = new AssistMain(dte);
+                var executor = new Executor(dte);
                 var scope = GetScope(menuCommand.CommandID.ID);
 
                 executor.ExecuteStatement(scope);

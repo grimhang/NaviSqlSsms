@@ -33,7 +33,7 @@
       <Menu guid="guidDaviSqlSsmsPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS" />
         <Strings>
-          <ButtonText>DaviSql Ssms</ButtonText>
+          <ButtonText>DaviSql</ButtonText>
         </Strings>
       </Menu>
     </Menus>

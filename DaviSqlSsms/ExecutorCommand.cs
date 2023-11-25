@@ -10,7 +10,7 @@ using Task = System.Threading.Tasks.Task;
 using EnvDTE;
 using EnvDTE80;
 
-namespace ChoolSsmsAssist
+namespace DaviSqlSsms
 {
     /// <summary>
     /// Command handler

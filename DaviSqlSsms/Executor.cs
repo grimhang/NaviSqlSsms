@@ -5,7 +5,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
 
-namespace ChoolSsmsAssist
+namespace DaviSqlSsms
 {
     sealed class Executor
     {

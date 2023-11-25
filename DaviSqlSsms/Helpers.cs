@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EnvDTE80;
 
-namespace ChoolSsmsAssist
+namespace DaviSqlSsms
 {
     static class Helpers
     {

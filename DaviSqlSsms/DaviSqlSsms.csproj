@@ -59,7 +59,7 @@
   <ItemGroup>
     <Compile Include="Executor.cs" />
     <Compile Include="ExecutorCommand.cs" />
-    <Compile Include="AssistMainPackage.cs" />
+    <Compile Include="DaviSqlSsmsPackage.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

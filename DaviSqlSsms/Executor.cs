@@ -253,62 +253,6 @@ namespace DaviSqlSsms
                         MakeSelection(currentStatement.StartPoint, currentStatement.EndPoint);
 
                         // execute the statement
-                        Exec();
-
-                        // restore selection
-                        //RestoreActiveAndAnchorPoints();       //여기가 핵심
-                    }
-                }
-                else
-                {
-                    // there are syntax errors
-                    // execute anyway to show the errors
-                    Exec();
-                }
-            }
-        }
-
-        public void SelectStatement(ExecScope scope = ExecScope.Block)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            if (!CanExecute())
-            {
-                return;
-            }
-
-            SaveActiveAndAnchorPoints();
-
-            if (!(document.Selection as TextSelection).IsEmpty)
-            {
-                Exec();
-            }
-            else
-            {
-                var script = GetDocumentText();
-                var caretPoint = GetCaretPoint();
-
-                bool success = ParseSqlFragments(script, out TSqlScript sqlScript);
-
-                if (success)
-                {
-                    TextBlock currentStatement = null;
-
-                    foreach (var batch in sqlScript?.Batches)
-                    {
-                        currentStatement = FindCurrentStatement(batch.Statements, caretPoint, scope);
-
-                        if (currentStatement != null)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (currentStatement != null)
-                    {
-                        // select the statement to be executed
-                        MakeSelection(currentStatement.StartPoint, currentStatement.EndPoint);
-
-                        // execute the statement
                         //Exec();
 
                         // restore selection
@@ -323,6 +267,68 @@ namespace DaviSqlSsms
                 }
             }
         }
+
+        //public void ExecuteStatement(ExecScope scope = ExecScope.Block)
+        //{
+        //    ThreadHelper.ThrowIfNotOnUIThread();
+        //    if (!CanExecute())
+        //    {
+        //        return;
+        //    }
+
+        //    //SaveActiveAndAnchorPoints();
+
+        //    if (!(document.Selection as TextSelection).IsEmpty)
+        //    {
+        //        Exec();
+        //    }            
+        //}
+
+        /*public void SelectStatement(ExecScope scope = ExecScope.Block)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            if (!CanExecute())
+            {
+                return;
+            }
+
+            SaveActiveAndAnchorPoints();
+
+
+            var script = GetDocumentText();
+            var caretPoint = GetCaretPoint();
+
+            bool success = ParseSqlFragments(script, out TSqlScript sqlScript);
+
+            if (success)
+            {
+                TextBlock currentStatement = null;
+
+                foreach (var batch in sqlScript?.Batches)
+                {
+                    currentStatement = FindCurrentStatement(batch.Statements, caretPoint, scope);
+
+                    if (currentStatement != null)
+                    {
+                        break;
+                    }
+                }
+
+                if (currentStatement != null)
+                {
+                    // select the statement to be executed
+                    MakeSelection(currentStatement.StartPoint, currentStatement.EndPoint);
+
+                    // execute the statement
+                    //Exec();
+
+                    // restore selection
+                    //RestoreActiveAndAnchorPoints();       //여기가 핵심
+                }
+            }
+
+        }
+        */
 
         public class VirtualPoint
         {

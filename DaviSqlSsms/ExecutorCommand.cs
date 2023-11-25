@@ -18,7 +18,7 @@ namespace DaviSqlSsms
     internal sealed class ExecutorCommand
     {
         public const int ExecuteStatementCommandId = 0x0100;
-        public const int ExecuteInnerStatementCommandId = 0x0101;
+        //public const int ExecuteInnerStatementCommandId = 0x0101;
 
 
         public static readonly Guid CommandSet = new Guid("fc414d62-d245-4820-8b28-e4378b61211b");
@@ -45,10 +45,12 @@ namespace DaviSqlSsms
             commandService.AddCommand(menuCommand);
 
             // Create execute inner satetement menu item
+            /*
             menuCommandID = new CommandID(CommandSet, ExecuteInnerStatementCommandId);
             menuCommand = new OleMenuCommand(Command_SelectSql, menuCommandID);
             //menuCommand.BeforeQueryStatus += Command_QueryStatus;
             commandService.AddCommand(menuCommand);
+            */
         }
 
         /// <summary>
@@ -124,15 +126,6 @@ namespace DaviSqlSsms
             }
         }
 
-        private void Command_SelectSql(object sender, EventArgs e)
-        {
-            if (sender is OleMenuCommand menuCommand)
-            {
-                var executor = new Executor(dte);
-                var scope = GetScope(menuCommand.CommandID.ID);
 
-                executor.SelectStatement(scope);
-            }
-        }
     }
 }

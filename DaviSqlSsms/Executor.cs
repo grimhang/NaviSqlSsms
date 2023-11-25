@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 
 using EnvDTE;
 using EnvDTE80;
@@ -27,6 +28,7 @@ namespace DaviSqlSsms
 
         private VirtualPoint GetCaretPoint()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var p = ((TextSelection)document.Selection).ActivePoint;
 
             return new VirtualPoint(p);
@@ -34,6 +36,7 @@ namespace DaviSqlSsms
 
         private string GetDocumentText()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var content = string.Empty;
             var selection = (TextSelection)document.Selection;
 
@@ -54,6 +57,7 @@ namespace DaviSqlSsms
 
         private void SaveActiveAndAnchorPoints()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var selection = (TextSelection)document.Selection;
 
             oldAnchor = selection.AnchorPoint.CreateEditPoint();
@@ -70,6 +74,7 @@ namespace DaviSqlSsms
 
         private void MakeSelection(VirtualPoint startPoint, VirtualPoint endPoint)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var selection = (TextSelection)document.Selection;
 
             selection.MoveToLineAndOffset(startPoint.Line, startPoint.LineCharOffset);
@@ -189,11 +194,13 @@ namespace DaviSqlSsms
 
         private void Exec()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             document.DTE.ExecuteCommand(CMD_QUERY_EXECUTE);
         }
 
         private bool CanExecute()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             try
             {
                 var cmd = document.DTE.Commands.Item(CMD_QUERY_EXECUTE, -1);
@@ -207,6 +214,7 @@ namespace DaviSqlSsms
 
         public void ExecuteStatement(ExecScope scope = ExecScope.Block)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             if (!CanExecute())
             {
                 return;
@@ -273,6 +281,7 @@ namespace DaviSqlSsms
 
             public VirtualPoint(EnvDTE.TextPoint point)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
                 Line = point.Line;
                 LineCharOffset = point.LineCharOffset;
             }

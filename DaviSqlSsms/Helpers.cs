@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
 
 namespace DaviSqlSsms
 {
@@ -11,6 +12,8 @@ namespace DaviSqlSsms
     {
         public static bool HasActiveDocument(this DTE2 dte)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (dte != null && dte.ActiveDocument != null)
             {
                 var doc = (dte.ActiveDocument.DTE)?.ActiveDocument;
@@ -22,6 +25,8 @@ namespace DaviSqlSsms
 
         public static EnvDTE.Document GetDocument(this DTE2 dte)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (dte.HasActiveDocument())
             {
                 return (dte.ActiveDocument.DTE)?.ActiveDocument;

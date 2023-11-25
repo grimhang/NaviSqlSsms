@@ -85,6 +85,7 @@
 
   <KeyBindings>
     <KeyBinding guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" editor="guidSqlQueryEditor" mod1="CONTROL SHIFT" key1="VK_RETURN" />
+    <KeyBinding guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand1" editor="guidSqlQueryEditor" mod1="CONTROL SHIFT" key1="P" />
   </KeyBindings>
   
   <Symbols>

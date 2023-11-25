@@ -1,24 +1,17 @@
-# SSMS Executor
+# DaviSqlSSMS
 
-SQL Server Management Studio (SSMS) extension for executing the current statement based on the cursor position.
+DaviSqlSSMS은 SQL Server Management Studio (SSMS) 사용을 돕는 확장기능이다.
 
 If your script contains multiple statements, position the cursor within the desired statement and press `ctrl+shift+e` to execute it.
 
-# Documentation
-
-[Getting started guide](https://github.com/devvcat/ssms-executor/wiki)
-
-[Known issues with workarounds](https://github.com/devvcat/ssms-executor/wiki/Known-issues)
-
-[Release notes for released versions and daily builds](https://github.com/devvcat/ssms-executor/wiki/Release-notes)
-
-# Downloads/builds
-
-## SQL Server Management Studio (SSMS) 16.x, 17.x and 18.x Extension
-
-You can download the extension from the [Releases section](https://github.com/devvcat/ssms-executor/releases)
+# 기능
+SSMS 편집기에서 현재 위치에 해당하는 sql 선택 또는 실행하는 확장기능.
 
 
-## SQL Server Management Studio (SSMS) 2012 AddIn
+## 설치
+압축을 풀고 DaviSqlSsms 폴더를 c:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\에 복사
 
-You can download the addin from the [Releases section](https://github.com/devvcat/ssms-executor/releases)
+
+## 사용
+SSMS에 DaviSql SSMS 라는 메뉴가 생긴다.  
+Ctrl + 엔터를 치면 커서위치에 sql을 선택. 한번더 치면 sql 실행.

@@ -92,10 +92,10 @@ namespace DaviSqlSsms
         private Executor.ExecScope GetScope(int commandId)
         {
             var scope = Executor.ExecScope.Block;
-            if (commandId == ExecuteInnerStatementCommandId)
-            {
-                scope = Executor.ExecScope.Inner;
-            }
+            //if (commandId == ExecuteInnerStatementCommandId)
+            //{
+            //    scope = Executor.ExecScope.Inner;
+            //}
             return scope;
         }
 

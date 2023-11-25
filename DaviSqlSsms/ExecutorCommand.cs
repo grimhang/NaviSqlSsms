@@ -24,7 +24,7 @@ namespace DaviSqlSsms
         public static readonly Guid CommandSet = new Guid("fc414d62-d245-4820-8b28-e4378b61211b");
 
         private readonly AsyncPackage package;
-        DTE2 dte;
+        private static DTE2 dte;
 
         private ExecutorCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
@@ -71,6 +71,8 @@ namespace DaviSqlSsms
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
             Instance = new ExecutorCommand(package, commandService);
+
+            dte = await package.GetServiceAsync(typeof(DTE)) as DTE2;
         }
 
         private Executor.ExecScope GetScope(int commandId)
@@ -99,15 +101,10 @@ namespace DaviSqlSsms
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
 
-        private async void Command_Exec(object sender, EventArgs e)
+        private void Command_Exec(object sender, EventArgs e)
         {
             if (sender is OleMenuCommand menuCommand)
-            {
-                if (dte == null)
-                {
-                    dte = await package.GetServiceAsync(typeof(DTE)) as DTE2;
-                }
-
+            {               
                 var executor = new Executor(dte);
                 var scope = GetScope(menuCommand.CommandID.ID);
 

@@ -37,6 +37,7 @@ namespace ChoolSsmsAssist
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(AssistMainPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    //[ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class AssistMainPackage : AsyncPackage
     {
         /// <summary>
@@ -53,6 +54,12 @@ namespace ChoolSsmsAssist
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
+
+
+            //SSMS 가 로딩될때 초기화가 필요한 코드가 있으면 여기에 넣고 ProvideAutoLoad 특성을 지정
+            //int testInt;
+
+            //testInt = 10;
         }
 
         #region Package Members

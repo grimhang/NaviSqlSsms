@@ -17,5 +17,5 @@ SSMS 편집기에서 현재 위치에 해당하는 쿼리만 선택 하거나 �
 
 ## 사용
 SSMS에 DaviSql 라는 메뉴가 생긴다.  
-Ctrl + Shift + 엔터를 치면 커서위치의 sql을 선택. 한번더 치면 sql 실행.
+Ctrl + Shift + 엔터를 치면 커서위치 sql만 선택. 한번더 치면 sql 실행.
 

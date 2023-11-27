@@ -1,27 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
-  <!--  This is the file that defines the actual layout and type of the commands.
-        It is divided in different sections (e.g. command definition, command
-        placement, ...), with each defining a specific set of properties.
-        See the comment before each section for more details about how to
-        use it. -->
-
-  <!--  The VSCT compiler (the tool that translates this file into the binary
-        format that VisualStudio will consume) has the ability to run a preprocessor
-        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so
-        it is possible to define includes and macros with the same syntax used
-        in C++ files. Using this ability of the compiler here, we include some files
-        defining some of the constants that we will use inside the file. -->
-
-  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
   <Extern href="stdidcmd.h"/>
-
-  <!--This header contains the command ids for the menus provided by the shell. -->
   <Extern href="vsshlids.h"/>
 
-  <!--The Commands section is where commands, menus, and menu groups are defined.
-      This section uses a Guid to identify the package that provides the command defined inside it. -->
   <Commands package="guidDaviSqlSsmsPackage">
     <Groups>
       <Group guid="guidDaviSqlSsmsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
@@ -38,18 +19,7 @@
       </Menu>
     </Menus>
     
-    <Buttons>
-      <!--<Button guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" priority="0x0100" type="Button">
-        <Parent guid="guidDaviSqlSsmsPackageCmdSet" id="MyToolsMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic2" />
-        --><!--<CommandFlag>DefaultDisabled</CommandFlag>--><!--
-        <Strings>
-          <CommandName>DaviSqlSsms.ExecuteCurrentStatement</CommandName>
-          <ToolTipText>Execute Current Statement</ToolTipText>
-          <ButtonText>Execute Statement</ButtonText>
-        </Strings>
-      </Button>-->
-      
+    <Buttons>      
       <Button guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" priority="0x0100" type="Button">
         <Parent guid="guidDaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
@@ -58,17 +28,6 @@
           <ButtonText>Select/Execute Sql</ButtonText>
         </Strings>
       </Button>
-
-      <!--<Button guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand1" priority="0x0101" type="Button">
-        <Parent guid="guidDaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic2" />
-        --><!--<CommandFlag>DefaultDisabled</CommandFlag>--><!--
-        <Strings>
-          <CommandName>DaviSqlSsms.ExecuteInnerStatement</CommandName>
-          <ToolTipText>Execute Inner Statement</ToolTipText>
-          <ButtonText>Select Current Sql</ButtonText>
-        </Strings>
-      </Button>-->
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->

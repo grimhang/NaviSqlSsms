@@ -4,7 +4,7 @@ DaviSql for SSMS은 SQL Server Management Studio (SSMS) 사용을 돕는 확장�
 
 
 # 기능
-- SSMS 편집기에서 현재 위치에 해당하는 쿼리만 선택 하거나 실행할수 있는 확장기능. 여기 참고 [ssms-executor](https://github.com/devvcat/ssms-executor)
+- SSMS 편집기에서 커서의 현재위치 쿼리만 선택 하거나 실행할수 있는 확장기능. 여기 참고 [ssms-executor](https://github.com/devvcat/ssms-executor)
 
 
 ## 설치

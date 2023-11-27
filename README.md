@@ -11,7 +11,8 @@ DaviSql for SSMS은 SQL Server Management Studio (SSMS) 사용을 돕는 확장�
 [Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9/DaviSqlSsms_V0.9.zip)
 
 압축을 풀고 DaviSqlSsms 폴더를  
-c:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\에 붙여넣기  
+c:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
+에 붙여넣기  
 
 복사할때 관리자 권한 물어볼수 있음.
 

@@ -19,10 +19,20 @@
       </Menu>
     </Menus>
     
-    <Buttons>      
-      <Button guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" priority="0x0100" type="Button">
+    <Buttons>
+      <Button guid="guidDaviSqlSsmsPackageCmdSet" id="cmdIdImeAutoFix" priority="0x0100" type="Button">
         <Parent guid="guidDaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic1" />
+        <!--<Icon guid="guidImages" id="bmpPic1" />-->
+        <CommandFlag>TextOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Lang AutoFix</ButtonText>
+        </Strings>
+      </Button>
+      
+      <Button guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" priority="0x0101" type="Button">
+        <Parent guid="guidDaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
+        <!--<Icon guid="guidImages" id="bmpPic1" />-->
+        <CommandFlag>TextOnly</CommandFlag>
         <Strings>
           <CommandName>DaviSqlSsms.ExecuteCurrentStatement</CommandName>
           <ButtonText>Select/Execute Sql</ButtonText>
@@ -51,6 +61,8 @@
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="MyToolsMenuGroup" value="0x1021" />
       <IDSymbol name="cmdidExecutorCommand" value="0x0100" />
+      <IDSymbol name="cmdIdImeAutoFix" value="0x0101" />
+      
       <!--<IDSymbol name="cmdidExecutorCommand1" value="0x101" />-->
     </GuidSymbol>
 

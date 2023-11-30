@@ -11,11 +11,14 @@ using EnvDTE;
 using EnvDTE80;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows;
+
 using System.IO;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft;
 using DaviSqlSsms.Properties;
+using System.Text;
 
 namespace DaviSqlSsms
 {
@@ -78,6 +81,9 @@ namespace DaviSqlSsms
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
         [DllImport("user32.dll")]
         public static extern Int32 GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
@@ -180,7 +186,7 @@ namespace DaviSqlSsms
                     MessageBox.Show("감시 종료됨");
                 }
 
-                OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 종료 {GetIME()}-->{ReadHanEngType()}" + Environment.NewLine);
+                OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 종료" + Environment.NewLine);
 
                 //dte.Events.WindowEvents.WindowActivated -= OnWindowActivated;
             }
@@ -325,7 +331,7 @@ namespace DaviSqlSsms
                     //return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);        // 1. 첫번째 버전
                     //return SetWindowsHookEx(WH_KEYBOARD_LL, proc, curModule.BaseAddress, 0);                           // 2. 두번째 버전
                     //return SetWindowsHookEx(WH_KEYBOARD_LL, proc, curModule.BaseAddress, threadID);                           // 2. 두번째 버전
-                    return SetWindowsHookEx(WH_KEYBOARD, proc, IntPtr.Zero, (uint)curProcess.Threads[0].Id);                           // 2. 로컬 후킹
+                    return SetWindowsHookEx(WH_KEYBOARD, proc, IntPtr.Zero, (uint)curProcess.Threads[0].Id);            // 2. 로컬 후킹
                     //return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), (uint)Thread.CurrentThread.ManagedThreadId);
                     //return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 3);
                 }
@@ -335,67 +341,59 @@ namespace DaviSqlSsms
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            //IntPtr hWnd = GetForegroundWindow();
+
             IntPtr mainWinHandle = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle;
+           
+            string temp = "";
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();          //현재 활성화된 창
 
-            //if (string.Equals(processName, "ssms", StringComparison.OrdinalIgnoreCase))
+            if (GetWindowText(handle, Buff, nChars) > 0)
+            {
+                temp = Buff.ToString();
+            }
 
-            //if (nCode > 0)
-            // 지역 hook일때 nCode가 총 3번 호출되는데 3이 두번, 0이 한번키
-            // 이유 모름
+            string keyStatus = ((int)lParam & 2147483648) == 0 ? "KeyDown" : "KeyUp";
 
-
+            //OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 후킹버튼눌려짐 nCode({nCode}) WindowText({temp}) {keyStatus}" + Environment.NewLine);
+            //var ttt = System.Windows. Application.Current;//   .Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);            
 
             //02. 일반로직
 
-            // 전역 후킹일때
-            //if (nCode >= 0)// && wParam == (IntPtr)WM_KEYDOWN)
-            //{
-            //    //int vkCode = Marshal.ReadInt32(lParam);
+            #region 전역후킹일때
+            /*
+                if (nCode >= 0)// && wParam == (IntPtr)WM_KEYDOWN)
+                {
+                    //int vkCode = Marshal.ReadInt32(lParam);
 
-            //    //if ((Keys)vkCode == Keys.KanaMode)
-            //    if ((int)wParam == 17)
-            //        {
-            //        WriteHanEngType(GetIME() == "Han" ? "Eng" : "Han");
-            //        WriteLogFile("한영전환버튼만");
-            //        Debug.WriteLine("한영전환버튼만");
-            //    }
-            //    else
-            //    {
-            //        //WriteLogFile("키보드:" + (Keys)vkCode);
-            //        Debug.WriteLine($"Wparam:{wParam}");
-            //        Debug.WriteLine($"lparam:{lParam}");
-            //        Debug.WriteLine("키보드:" + ((char)wParam).ToString());
-            //    }
-            //}
-
-
-
-            //if (nCode == 3 && (((int)lParam & 2147483648) == 0))
-            //{
-            //    if (GetIME() != ReadHanEngType()) //설정파일의 한영과 현재의 한영이 다르면 설정의 자판으로 변경
-            //    {
-            //        //SetCurrentLang(GetModuleHandle(curModule.ModuleName), ReadHanEngType());        //01. 일단 한영으로 변경하고
-            //        //SetCurrentLang(Process.GetCurrentProcess().Handle, ReadHanEngType());        //01. 일단 한영으로 변경하고
-            //        //SetCurrentLang(ImmGetDefaultIMEWnd(Process.GetCurrentProcess().MainWindowHandle), ReadHanEngType());
-            //        SetCurrentLang(mainWinHandle, ReadHanEngType());
-
-            //        //SetCurrentLang(hwnd, ReadHanEngType());        //01. 일단 한영으로 변경하고
-            //        //Debug.WriteLine("강제한영전환");                        
-
-            //        string txtMsg = "강제한영전환11111";
-            //        WriteLogFile(txtMsg);
-            //        OutputWindow.OutputString(DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + txtMsg + $"{GetIME()}-->{ReadHanEngType()}" + Environment.NewLine);
-            //    }
-            //}
-
+                    //if ((Keys)vkCode == Keys.KanaMode)
+                    if ((int)wParam == 17)
+                    {
+                        WriteHanEngType(GetIME() == "Han" ? "Eng" : "Han");
+                        WriteLogFile("한영전환버튼만");
+                        Debug.WriteLine("한영전환버튼만");
+                    }
+                    else
+                    {
+                        //WriteLogFile("키보드:" + (Keys)vkCode);
+                        Debug.WriteLine($"Wparam:{wParam}");
+                        Debug.WriteLine($"lparam:{lParam}");
+                        Debug.WriteLine("키보드:" + ((char)wParam).ToString());
+                    }
+                }
+                */
+            #endregion
 
             //로컬 후킹일때
             //lparam 31번째 0이면 눌려짐. 1이면 떼짐.
             //현재는 두개 이벤트가 다 들어오기 때문에 비트연산으로 31번째 비트가 0인지 1인지 알아내야 함
-            //최상위 비트가 1[2147483648]이면 키놓아진거. 0[0]이면 눌려진거.  wm_keydown, wm_KEYUP
-            // nCode는 3 or 0가 들어오는데 0이 정상적인 입력 체크이고 3은 사전작업 같음. 최종적으로 3이 먼저 들어오므로 이걸 체크해서 로직 적용
-            if (nCode == 3 && (((int)lParam & 2147483648) == 0))
+            //최상위 비트가 1[2147483648]이면 WM_KEYUP. 0[0]이면 WM_KEYDOWN.
+            // nCode는 3 or 0가 들어오는데 0이 정상적인 입력 체크이고 3은 사전작업 같음. 불일치일때 WM_KEYDOWN의 사전작업(3)때 강제한영전환이 필요한듯.
+
+            // 지역 hook일때 nCode(3), WM_KEDOWN --> nCode(0), WM_KEYDOWN --> nCode(3), WM_KEYUP --> nCode(0), WM_KEYUP 총 4번 호출되는듯 예상. 정확치는 않음.
+
+            if ((int)wParam != 21 && nCode == 3 && (((int)lParam & 2147483648) == 0)) // 사전작업(3), WM_KEYDOWN, 한영키가 아닐때만
             {
 
                 //Debug.WriteLine($"nCode:{nCode}");
@@ -406,11 +404,11 @@ namespace DaviSqlSsms
 
                 string txtMsg;
                 string nowIme = GetIME();
-                string finalIme = nowIme == "Han" ? "Eng" : "Han";
+                string nowHanEngText = ReadHanEngType();
 
                 try
                 {
-                    if (GetIME() != ReadHanEngType()) //설정파일의 한영과 현재의 한영이 다르면 설정의 자판으로 변경
+                    if (nowIme != nowHanEngText) //설정파일의 한영과 현재의 한영이 다르면 설정의 자판으로 변경
                     {
                         //SetCurrentLang(GetModuleHandle(curModule.ModuleName), ReadHanEngType());        //01. 일단 한영으로 변경하고
                         //SetCurrentLang(Process.GetCurrentProcess().Handle, ReadHanEngType());        //01. 일단 한영으로 변경하고
@@ -422,17 +420,20 @@ namespace DaviSqlSsms
 
                         txtMsg = "강제한영전환";
                         WriteLogFile(txtMsg);
-                        OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {GetIME()}-->{ReadHanEngType()}" + Environment.NewLine);
+                        OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {nowIme}-->{nowHanEngText}" + Environment.NewLine);
                     }
 
+                    /*
+                    // 편집기 창에만 한영버튼이 눌려져야 한다.
                     if ((int)wParam == 21)  //한영버튼
                     {
-                        txtMsg = "한영전환버튼";
+                        txtMsg = "한영전환";
+                        string finalIme = nowIme == "Han" ? "Eng" : "Han";
 
                         WriteHanEngType(finalIme);
                         WriteLogFile(txtMsg);
 
-                        OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {GetIME()}-->{ReadHanEngType()}" + Environment.NewLine);
+                        OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {nowIme}-->{finalIme}" + Environment.NewLine);
                         //Debug.WriteLine("한영전환버튼만");
 
                         //Debug.WriteLine($"Wparam:{wParam}");
@@ -447,22 +448,47 @@ namespace DaviSqlSsms
                         //Debug.WriteLine("키보드:" + ((char)wParam).ToString());
                         //Debug.WriteLine($"눌려짐확인: {(int)lParam & 2147483648}");
                     }
+                    */
                 }
                 catch (IOException err)
                 {
                     MessageBox.Show("IOError :" + err.Message + Environment.NewLine + "Hooking close");
                     UnhookWindowsHookEx(_hookID);
-                    //throw;
                 }
-
-
-
-                //repeatCnt = repeatCnt == 0 ? 1 : 0;
-
             }
 
-            //}
-            //}
+            if ((int)wParam == 21 && nCode == 0 && (((int)lParam & 2147483648) != 0)) // 한영키, 사전작업 아님(0), WM_KEYUP 일때만
+            {
+
+                //Debug.WriteLine($"nCode:{nCode}");
+                //Debug.WriteLine($"Wparam:{wParam}");
+                //Debug.WriteLine($"lparam:{lParam}");
+                //Debug.WriteLine("키보드:" + ((char)wParam).ToString());
+                //Debug.WriteLine($"눌려짐확인: {(int)lParam & 2147483648}");
+
+                string txtMsg;
+                //string nowIme = GetIME();
+                string nowHanEngText = ReadHanEngType();
+
+                try
+                {
+
+                    txtMsg = "한영전환";
+                    string finalIme = nowHanEngText == "Han" ? "Eng" : "Han";
+
+                    WriteHanEngType(finalIme);
+                    WriteLogFile(txtMsg);
+
+                    OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {nowHanEngText}-->{finalIme}" + Environment.NewLine);
+
+
+                }
+                catch (IOException err)
+                {
+                    MessageBox.Show("IOError :" + err.Message + Environment.NewLine + "Hooking close");
+                    UnhookWindowsHookEx(_hookID);
+                }
+            }
 
             //ToolButtonVisible(GetIME());
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
@@ -546,7 +572,7 @@ namespace DaviSqlSsms
 
         private void Command_QueryStatus(object sender, EventArgs e)
         {
-            string txtMsg;
+            //string txtMsg;
 
             ThreadHelper.ThrowIfNotOnUIThread();
             if (sender is OleMenuCommand menuCommand)

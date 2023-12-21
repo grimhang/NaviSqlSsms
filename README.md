@@ -2,7 +2,7 @@
 SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 
 
-### 기능
+# 기능
 - Sql Selector : SSMS 편집기에서 커서의 위치 쿼리만 선택 하거나 실행할수 있는 확장기능.  
                 [ssms-executor](https://github.com/devvcat/ssms-executor)를 참고함.
 

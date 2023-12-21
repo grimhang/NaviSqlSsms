@@ -28,5 +28,5 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 #### 2. Lang AutoFix
     DaviSql 메뉴에 Lang AutoFix 클릭하면 알림팝업이 뜸. 가끔씩 한글로 고정되는 SSMS문제 자동 교정.  
 
-    변경 실시간 기록을 보려면 메뉴 / 보기 / 출력(Ctrl + Alt + O) 클릭 후. 
-    출력 Windows의 드롭다운에서 DaviSql Ssms 선택.
+    실시간으로 교정되는지 보려면 메뉴 / 보기 / 출력(Ctrl + Alt + O) 클릭 후에  
+     출력 Windows의 드롭다운에서 DaviSql Ssms 선택.

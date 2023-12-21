@@ -1,24 +1,18 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Task = System.Threading.Tasks.Task;
-
+﻿using DaviSqlSsms.Properties;
 using EnvDTE;
 using EnvDTE80;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Windows;
-
-using System.IO;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft;
-using DaviSqlSsms.Properties;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using System;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
+using Task = System.Threading.Tasks.Task;
 
 namespace DaviSqlSsms
 {
@@ -36,6 +30,12 @@ namespace DaviSqlSsms
         private readonly AsyncPackage package;
         private static DTE2 dte;
 
+        //private static IVsOutputWindowPane OutputWindow;
+        private static IVsOutputWindow customWindow;
+        private static IVsOutputWindowPane customePane;
+        private Guid paneGuid;
+        private static string logFileName;
+
         // ----------------------------------------------------------------------
         private delegate IntPtr LocalKeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
@@ -45,7 +45,7 @@ namespace DaviSqlSsms
         #region Win32 Api Import
 
         private const int WH_KEYBOARD = 2;
-        private const int WH_KEYBOARD_LL = 13;
+        //private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
 
         private static IntPtr _hookID = IntPtr.Zero;
@@ -118,8 +118,6 @@ namespace DaviSqlSsms
             menuCommand = new OleMenuCommand(this.Command_Exec, menuCommandID);
             //menuCommand.BeforeQueryStatus += Command_QueryStatus;
             commandService.AddCommand(menuCommand);
-
-
         }
 
         /// <summary>
@@ -130,8 +128,6 @@ namespace DaviSqlSsms
             get;
             private set;
         }
-
-        private static IVsOutputWindowPane OutputWindow;
 
         /// <summary>
         /// Gets the service provider from the owner package.
@@ -157,8 +153,12 @@ namespace DaviSqlSsms
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
             Instance = new ExecutorCommand(package, commandService);
 
-            OutputWindow = await package.GetServiceAsync(typeof(SVsGeneralOutputWindowPane)) as IVsOutputWindowPane;
-            Assumes.Present(OutputWindow);
+            //OutputWindow = await package.GetServiceAsync(typeof(SVsGeneralOutputWindowPane)) as IVsOutputWindowPane;
+            //Assumes.Present(OutputWindow);
+
+            customWindow = await package.GetServiceAsync(typeof(SVsOutputWindow)) as IVsOutputWindow;
+            Assumes.Present(customWindow);
+
             dte = await package.GetServiceAsync(typeof(DTE)) as DTE2;
             Assumes.Present(dte);
         }
@@ -180,14 +180,23 @@ namespace DaviSqlSsms
 
             if (obj.Checked)
             {
-                obj.Checked = false;
+                obj.Checked = false;               
+
                 if (UnhookWindowsHookEx(_hookID))
                 {
                     MessageBox.Show("감시 종료됨");
                 }
 
-                OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 종료" + Environment.NewLine);
+                //OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 종료" + Environment.NewLine);
+                //customePane.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 종료" + Environment.NewLine);
 
+                string writeMsg = $"AutoFix End ({GetIME()}) {Environment.NewLine}-------------------------------------------";
+                WriteToWindowPane(writeMsg);
+                WriteToLogFile(writeMsg);
+                //customWindow.DeletePane(ref paneGuid);
+
+
+                logFileName = "";
                 //dte.Events.WindowEvents.WindowActivated -= OnWindowActivated;
             }
             else
@@ -196,7 +205,15 @@ namespace DaviSqlSsms
                 MessageBox.Show("감시 시작됨");
                 _hookID = SetHook(_proc);
 
-                OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 시작" + Environment.NewLine);
+                //OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 시작" + Environment.NewLine);
+
+                paneGuid = new Guid();
+                CreatePane(paneGuid, "DaviSql SSMS", true, false);
+
+                //File.AppendAllText(logFileFullPath, $"{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")} : AutoFix Start --> Start{GetIME()}" + Environment.NewLine);
+                string writeMsg = $"AutoFix Start ({GetIME()})";
+                WriteToWindowPane(writeMsg);
+                WriteToLogFile(writeMsg);
 
                 //dte = Package.GetGlobalService(typeof(EnvDTE.DTE)) as DTE;
                 //dte.Events.WindowEvents.WindowActivated += OnWindowActivated;                
@@ -343,7 +360,7 @@ namespace DaviSqlSsms
             ThreadHelper.ThrowIfNotOnUIThread();
 
             IntPtr mainWinHandle = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle;
-           
+
             string temp = "";
             const int nChars = 256;
             StringBuilder Buff = new StringBuilder(nChars);
@@ -389,7 +406,7 @@ namespace DaviSqlSsms
             //lparam 31번째 0이면 눌려짐. 1이면 떼짐.
             //현재는 두개 이벤트가 다 들어오기 때문에 비트연산으로 31번째 비트가 0인지 1인지 알아내야 함
             //최상위 비트가 1[2147483648]이면 WM_KEYUP. 0[0]이면 WM_KEYDOWN.
-            // nCode는 3 or 0가 들어오는데 0이 정상적인 입력 체크이고 3은 사전작업 같음. 불일치일때 WM_KEYDOWN의 사전작업(3)때 강제한영전환이 필요한듯.
+            // nCode는 3 or 0가 들어오는데 0이 정상적인 입력 체크이고 3은 사전작업 같음. 불일치하는 경우이면서 WM_KEYDOWN의 사전작업(3)때 강제한영전환이 필요한듯.
 
             // 지역 hook일때 nCode(3), WM_KEDOWN --> nCode(0), WM_KEYDOWN --> nCode(3), WM_KEYUP --> nCode(0), WM_KEYUP 총 4번 호출되는듯 예상. 정확치는 않음.
 
@@ -419,8 +436,9 @@ namespace DaviSqlSsms
                         //Debug.WriteLine("강제한영전환");                        
 
                         txtMsg = "강제한영전환";
-                        WriteLogFile(txtMsg);
-                        OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {nowIme}-->{nowHanEngText}" + Environment.NewLine);
+                        WriteToLogFile(txtMsg);
+                        //customePane.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {nowIme}-->{nowHanEngText}" + Environment.NewLine);
+                        WriteToWindowPane($"{txtMsg} {nowIme}-->{nowHanEngText}");
                     }
 
                     /*
@@ -472,16 +490,14 @@ namespace DaviSqlSsms
 
                 try
                 {
-
                     txtMsg = "한영전환";
                     string finalIme = nowHanEngText == "Han" ? "Eng" : "Han";
 
                     WriteHanEngType(finalIme);
-                    WriteLogFile(txtMsg);
+                    WriteToLogFile(txtMsg);
 
-                    OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {nowHanEngText}-->{finalIme}" + Environment.NewLine);
-
-
+                    //customePane.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {nowHanEngText}-->{finalIme}" + Environment.NewLine);
+                    WriteToWindowPane($"{txtMsg} {nowHanEngText}-->{finalIme}");
                 }
                 catch (IOException err)
                 {
@@ -522,25 +538,32 @@ namespace DaviSqlSsms
             }
         }
 
-        private static void WriteLogFile(string str)
+        private static void WriteToLogFile(string str)
         {
-            string yyyymmdd = DateTime.Now.ToString("yyyyMMdd");
-            string logFileFullPath = Resources.FolderPath + "/" + Resources.LogFileNamePrefix + yyyymmdd + ".txt";
+            //string yyyymmdd = DateTime.Now.ToString("yyyyMMdd");
+            string ymmdHms = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
+            //string logFileFullPath = Resources.FolderPath + "/" + Resources.LogFileNamePrefix + ymmdHms + ".txt";
+
+            if (string.IsNullOrEmpty(logFileName))
+            {
+                logFileName = Resources.FolderPath + "/" + Resources.LogFileNamePrefix + ymmdHms + ".txt";
+            }
+            
             //var myFile = File.Create(myPath);
             //myFile.Close();
             // file.Create는 FileStream을 오픈하기 때문에 항상 Close하지 않으면 다른 프로세스에서 접근할수 없다는 오류 뜸
             //FileStream fs;
 
-            if (!File.Exists(logFileFullPath))
+            if (!File.Exists(logFileName))
             {
                 //var fs = File.Create(logFileFullPath);
                 //fs.Close();
 
-                File.Create(logFileFullPath).Close();
+                File.Create(logFileName).Close();                
             }
 
-            File.AppendAllText(logFileFullPath, DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " : " + str + Environment.NewLine);
+            File.AppendAllText(logFileName, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " : " + str + Environment.NewLine);
         }
 
         //private void Command_AutoFixStart(object sender, EventArgs e)
@@ -562,7 +585,7 @@ namespace DaviSqlSsms
         private void Command_Exec(object sender, EventArgs e)
         {
             if (sender is OleMenuCommand menuCommand)
-            {               
+            {
                 var executor = new Executor(dte);
                 var scope = GetScope(menuCommand.CommandID.ID);
 
@@ -587,9 +610,41 @@ namespace DaviSqlSsms
                     menuCommand.Checked = true;
                     //txtMsg = "LangAutoFix Start";
                 }
-                
+
                 //OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {GetIME()}-->{ReadHanEngType()}" + Environment.NewLine);
             }
+        }
+
+        private void CreatePane(Guid paneGuid, string title, bool visible, bool clearWithSolution)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            
+
+            //OutputWindow = await package.GetServiceAsync(typeof(SVsGeneralOutputWindowPane)) as IVsOutputWindowPane;
+            //Assumes.Present(OutputWindow);
+
+            //IVsOutputWindow customOutputPane = await package.GetServiceAsync(typeof(SVsOutputWindow)) as IVsOutputWindow;//              (IVsOutputWindow)GetService(typeof(SVsOutputWindow));
+            //IVsOutputWindowPane pane;
+
+            // Create a new pane.
+            customWindow.CreatePane(
+                ref paneGuid,
+                title,
+                Convert.ToInt32(visible),
+                Convert.ToInt32(clearWithSolution));
+
+            // Retrieve the new pane.
+            customWindow.GetPane(ref paneGuid, out customePane);
+
+            //pane.OutputString("This is the Created Pane \n");
+            //customePane.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 시작" + Environment.NewLine);
+            //WriteToWindowPane("감시 시작");
+        }
+
+        private static void WriteToWindowPane(string inputStr)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            customePane.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {inputStr}" + Environment.NewLine);
         }
     }
 }

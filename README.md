@@ -9,8 +9,8 @@ DaviSql for SSMS은 SQL Server Management Studio (SSMS) 사용을 돕는 확장�
 - Lang AutoFix : 한글로 강제로 바뀌는 버그 수정. 
 
 # 설치
-[Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9/DaviSqlSsms_V0.9.2.zip)
-
+[Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.2/DaviSqlSsms_V0.9.2.zip)
+           
     압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
      C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
 
@@ -29,4 +29,4 @@ DaviSql for SSMS은 SQL Server Management Studio (SSMS) 사용을 돕는 확장�
     DaviSql 메뉴에 Lang AutoFix 클릭하면 알림팝업이 뜨고 이제부터 한글로 고정되는 문제 자동 해결.  
 
     변경 실시간 로그를 보려면 메뉴에서 보기 / 출력(Ctrl + Alt + O) 클릭. 
-    아래쪽에 출력 Windows가 나오고 출력 보기 선택 드롭다운에서 DaviSql Ssms 선택.
+    아래쪽에 출력 Windows가 나오고 드롭다운에서 DaviSql Ssms 선택.

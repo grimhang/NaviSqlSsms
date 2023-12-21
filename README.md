@@ -14,8 +14,8 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
     압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
      C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
 
-    복사할때 관리자 권한 물어볼수 있음.  
-    현재 SSMS 19만 테스트해봄
+    복사할때 관리자 권한 물어볼수도 있음.  
+    현재 SSMS 19.1에서만 테스트해봄
 
 
 # 사용법
@@ -28,5 +28,5 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 #### 2. Lang AutoFix
     DaviSql 메뉴에 Lang AutoFix 클릭하면 알림팝업이 뜸. 가끔씩 한글로 고정되는 SSMS문제 자동 교정.  
 
-    변경 실시간 로그를 보려면 메뉴에서 보기 / 출력(Ctrl + Alt + O) 클릭. 
-    아래쪽에 출력 Windows가 나오고 드롭다운에서 DaviSql Ssms 선택.
+    변경 실시간 기록을 보려면 메뉴 / 보기 / 출력(Ctrl + Alt + O) 클릭 후. 
+    출력 Windows의 드롭다운에서 DaviSql Ssms 선택.

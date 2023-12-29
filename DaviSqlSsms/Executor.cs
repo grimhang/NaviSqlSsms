@@ -222,7 +222,9 @@ namespace DaviSqlSsms
 
             SaveActiveAndAnchorPoints();
 
-            if (!(document.Selection as TextSelection).IsEmpty)
+            var selection = (TextSelection)document.Selection;
+
+            if (!selection.IsEmpty)
             {
                 Exec();
             }
@@ -264,6 +266,23 @@ namespace DaviSqlSsms
                     // there are syntax errors
                     // execute anyway to show the errors
                     //Exec();
+                    TextBlock currentStatement = null;
+
+                    foreach (var batch in sqlScript?.Batches)
+                    {
+                        currentStatement = FindCurrentStatement(batch.Statements, caretPoint, ExecScope.Inner);
+
+                        if (currentStatement != null)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (currentStatement != null)
+                    {
+                        // select the statement to be executed
+                        MakeSelection(currentStatement.StartPoint, currentStatement.EndPoint);
+                    }
                 }
             }
         }

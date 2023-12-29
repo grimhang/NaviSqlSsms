@@ -21,11 +21,10 @@ namespace DaviSqlSsms
     /// </summary>
     internal sealed class ExecutorCommand
     {
-        public const int ExecuteStatementCommandId = 0x0100;
-        public const int cmdIdImeAutoFix = 0x0101;
-
-
         public static readonly Guid CommandSet = new Guid("fc414d62-d245-4820-8b28-e4378b61211b");
+
+        private const int cmdIdSelectExecuteStatement = 0x0100;
+        private const int cmdIdImeAutoFix = 0x0101;
 
         private readonly AsyncPackage package;
         private static DTE2 dte;
@@ -112,10 +111,10 @@ namespace DaviSqlSsms
             //menuCommand.BeforeQueryStatus += Command_QueryStatus;
             commandService.AddCommand(menuCommand);
 
-            // Create execute current statement menu item
-            menuCommandID = new CommandID(CommandSet, ExecuteStatementCommandId);
+            // Create Select/Execute current statement menu item
+            menuCommandID = new CommandID(CommandSet, cmdIdSelectExecuteStatement);
             //var menuItem = new MenuCommand(this.Execute, menuCommandID);
-            menuCommand = new OleMenuCommand(this.Command_Exec, menuCommandID);
+            menuCommand = new OleMenuCommand(this.Command_SelectStatement, menuCommandID);
             //menuCommand.BeforeQueryStatus += Command_QueryStatus;
             commandService.AddCommand(menuCommand);
         }
@@ -582,7 +581,7 @@ namespace DaviSqlSsms
         //        OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         //}
 
-        private void Command_Exec(object sender, EventArgs e)
+        private void Command_SelectStatement(object sender, EventArgs e)
         {
             if (sender is OleMenuCommand menuCommand)
             {
@@ -593,6 +592,7 @@ namespace DaviSqlSsms
             }
         }
 
+        /*
         private void Command_QueryStatus(object sender, EventArgs e)
         {
             //string txtMsg;
@@ -614,7 +614,7 @@ namespace DaviSqlSsms
                 //OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {txtMsg} {GetIME()}-->{ReadHanEngType()}" + Environment.NewLine);
             }
         }
-
+        */
         private void CreatePane(Guid paneGuid, string title, bool visible, bool clearWithSolution)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -644,7 +644,7 @@ namespace DaviSqlSsms
         private static void WriteToWindowPane(string inputStr)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            customePane.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} {inputStr}" + Environment.NewLine);
+            customePane.OutputString($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} {inputStr}" + Environment.NewLine);
         }
     }
 }

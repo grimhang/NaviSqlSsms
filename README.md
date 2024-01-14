@@ -3,15 +3,14 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 
 
 # 기능
-    - Sql Selector : SSMS 편집기에서 커서의 위치 쿼리만 선택 하거나 실행할수 있는 확장기능.  
-                    [ssms-executor](https://github.com/devvcat/ssms-executor)를 참고함.
+- Sql Selector : SSMS 편집기에서 커서의 위치 쿼리만 선택 하거나 실행할수 있는 확장기능.                  
                     
-    - Advanced Selector 기능 추가
-                    SSMS 텍스트 편집기 본문중 에러가 있는 구문이 하나라도 존재하면 위의 Sql Selector 기능
-                    작동 안함. (TrasactSqlDom 구조상 당연)
-                    이럴 경우 강제로 현재커서위치의 위/아래 공백라인까지만 선택되도록 함.
+- Advanced Selector 기능 추가
+                SSMS 텍스트 편집기 본문중 에러가 있는 구문이 하나라도 존재하면 위의 Sql Selector 기능
+                작동 안함. (TrasactSqlDom 구조상 당연)
+                이럴 경우 강제로 현재커서위치의 위/아래 공백라인까지만 선택되도록 함.
                     
-    - Lang AutoFix : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
+- Lang AutoFix : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
 
 # 설치
 [Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.5/DaviSqlSsms_V0.9.5.zip)

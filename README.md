@@ -7,9 +7,9 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
                     [ssms-executor](https://github.com/devvcat/ssms-executor)를 참고함.
                     
     - Advanced Selector 기능 추가
-                    SSMS 텍스트 편집기의 본문중 에러가 있는 구문이 존재하면 위 Sql Selector 기능이
-                    작동하지 않음(TrasactSqlDom 구조상 당연)
-                    이럴 경우 수동으로 현재위치의 위/아래 공백라인까지만 선택되도록 함.
+                    SSMS 텍스트 편집기 본문중 에러가 있는 구문이 하나라도 존재하면 위의 Sql Selector 기능
+                    작동 안함. (TrasactSqlDom 구조상 당연)
+                    이럴 경우 강제로 현재커서위치의 위/아래 공백라인까지만 선택되도록 함.
                     
     - Lang AutoFix : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
 

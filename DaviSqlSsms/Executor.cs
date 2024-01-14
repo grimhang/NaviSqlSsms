@@ -263,34 +263,66 @@ namespace DaviSqlSsms
                 }
                 else
                 {
-                    // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면
-                    // 현재 문장의 위/아래쪽으로 공백까지 선택하게
+                    // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면 tsqlparser가 작동이 안되기 때문에 
+                    // 수동으로 현재 문장의 위/아래쪽 공백까지 선택하게
 
-                    TextBlock currentStatement = null;
-
-                    //string[] lines = script.Split(Environment.NewLine.ToCharArray());
                     string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                    //string[] lines = script.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-
-                    VirtualPoint startPoint = new VirtualPoint();
-                    VirtualPoint endPoint = new VirtualPoint();
-
-                    for (int i = caretPoint.Line - 1; i >= 0; i--)
+                    if (!string.IsNullOrEmpty(lines[caretPoint.Line - 1].Trim()))
                     {
-                        if (string.IsNullOrEmpty(lines[i].Trim()))
-                        {
-                            startPoint.Line = i + 1;
-                            startPoint.LineCharOffset = 1;
-                            break;
-                        }
-                    }
+                        
+                        VirtualPoint startPoint = new VirtualPoint();
+                        VirtualPoint endPoint = new VirtualPoint();
 
+                        if (caretPoint.Line == 1) // 첫번째 라인이라면
+                        {
+                            startPoint.Line = 1;
+                            startPoint.LineCharOffset = 1;
+                        }
+                        else
+                        {
+                            // 내 라인은 공백이 아니고 위라인은 공백일때까지 루핑해 startPoint를 채움
+                            for (int currentLine = (caretPoint.Line - 1); currentLine > 0; currentLine--)
+                            {
+                                if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine - 1].Trim()))
+                                {
+                                    startPoint.Line = currentLine + 1;
+                                    startPoint.LineCharOffset = 1;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (caretPoint.Line == lines.Length) // 마지막 라인이라면
+                        {
+                            endPoint.Line = caretPoint.Line;
+                            endPoint.LineCharOffset = lines[caretPoint.Line - 1].Length + 1;
+                        }
+                        else
+                        {
+                            // 내 라인은 공백이 아니고 아래라인은 공백일때까지 루핑해 endPoint를 채움
+                            for (int currentLine = (caretPoint.Line - 1); currentLine < (lines.Length - 1); currentLine++)
+                            {
+                                if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine + 1].Trim()))
+                                {
+                                    endPoint.Line = (currentLine + 1);
+                                    endPoint.LineCharOffset = lines[currentLine].Length + 1;
+                                    break;
+                                }
+                            }
+
+                            //MakeSelection(startPoint, endPoint);
+                        }
+
+                        MakeSelection(startPoint, endPoint);
+                    }
+                    /*
                     if (currentStatement != null)
                     {
                         // select the statement to be executed
                         MakeSelection(currentStatement.StartPoint, currentStatement.EndPoint);
                     }
+                    */
                 }
             }
         }

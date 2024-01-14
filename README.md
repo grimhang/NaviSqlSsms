@@ -12,14 +12,14 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
                     
     - Lang AutoFix : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
 
-    # 설치
-    [Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.5/DaviSqlSsms_V0.9.5.zip)
-               
-        압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
-         C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
+# 설치
+[Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.5/DaviSqlSsms_V0.9.5.zip)
+           
+    압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
+     C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
 
-        복사할때 관리자 권한 물어볼수도 있음.  
-        현재 SSMS 19.1에서만 테스트해봄
+    복사할때 관리자 권한 물어볼수도 있음.  
+    현재 SSMS 19.x에서만 테스트해봄
 
 
 # 사용법

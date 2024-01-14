@@ -263,17 +263,25 @@ namespace DaviSqlSsms
                 }
                 else
                 {
-                    // there are syntax errors
-                    // execute anyway to show the errors
-                    //Exec();
+                    // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면
+                    // 현재 문장의 위/아래쪽으로 공백까지 선택하게
+
                     TextBlock currentStatement = null;
 
-                    foreach (var batch in sqlScript?.Batches)
-                    {
-                        currentStatement = FindCurrentStatement(batch.Statements, caretPoint, ExecScope.Inner);
+                    //string[] lines = script.Split(Environment.NewLine.ToCharArray());
+                    string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    //string[] lines = script.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-                        if (currentStatement != null)
+
+                    VirtualPoint startPoint = new VirtualPoint();
+                    VirtualPoint endPoint = new VirtualPoint();
+
+                    for (int i = caretPoint.Line - 1; i >= 0; i--)
+                    {
+                        if (string.IsNullOrEmpty(lines[i].Trim()))
                         {
+                            startPoint.Line = i + 1;
+                            startPoint.LineCharOffset = 1;
                             break;
                         }
                     }

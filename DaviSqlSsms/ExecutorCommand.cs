@@ -183,7 +183,7 @@ namespace DaviSqlSsms
 
                 if (UnhookWindowsHookEx(_hookID))
                 {
-                    MessageBox.Show("감시 종료됨");
+                    MessageBox.Show("AutoFix End");
                 }
 
                 //OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 종료" + Environment.NewLine);
@@ -201,7 +201,7 @@ namespace DaviSqlSsms
             else
             {
                 obj.Checked = true;
-                MessageBox.Show("감시 시작됨");
+                MessageBox.Show("AutoFix Start");
                 _hookID = SetHook(_proc);
 
                 //OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 시작" + Environment.NewLine);

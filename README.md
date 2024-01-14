@@ -3,23 +3,23 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 
 
 # 기능
-- Sql Selector : SSMS 편집기에서 커서의 위치 쿼리만 선택 하거나 실행할수 있는 확장기능.  
-                [ssms-executor](https://github.com/devvcat/ssms-executor)를 참고함.
-                
-- Advanced Selector 기능 추가
-                SSMS 텍스트 편집기의 본문중 에러가 있는 구문이 존재하면 위 Sql Selector 기능이 작동하지 않음(TrasactSqlDom 구조상 당연)
-                이럴 경우 수동으로 현재위치의 위/아래 공백라인까지만 선택되도록 함.
-                
-- Lang AutoFix : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
+    - Sql Selector : SSMS 편집기에서 커서의 위치 쿼리만 선택 하거나 실행할수 있는 확장기능.  
+                    [ssms-executor](https://github.com/devvcat/ssms-executor)를 참고함.
+                    
+    - Advanced Selector 기능 추가
+                    SSMS 텍스트 편집기의 본문중 에러가 있는 구문이 존재하면 위 Sql Selector 기능이 작동하지 않음(TrasactSqlDom 구조상 당연)
+                    이럴 경우 수동으로 현재위치의 위/아래 공백라인까지만 선택되도록 함.
+                    
+    - Lang AutoFix : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
 
-# 설치
-[Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.4/DaviSqlSsms_V0.9.4.zip)
-           
-    압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
-     C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
+    # 설치
+    [Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.4/DaviSqlSsms_V0.9.4.zip)
+               
+        압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
+         C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
 
-    복사할때 관리자 권한 물어볼수도 있음.  
-    현재 SSMS 19.1에서만 테스트해봄
+        복사할때 관리자 권한 물어볼수도 있음.  
+        현재 SSMS 19.1에서만 테스트해봄
 
 
 # 사용법

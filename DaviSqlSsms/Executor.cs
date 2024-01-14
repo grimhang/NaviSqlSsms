@@ -264,16 +264,14 @@ namespace DaviSqlSsms
                 else
                 {
                     // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면 tsqlparser가 작동이 안되기 때문에 
-                    // 수동으로 현재 문장의 위/아래쪽 공백까지 선택하게
-
+                    // 강제로 현재 문장의 위/아래쪽 공백까지 선택하게
                     string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+                    VirtualPoint startPoint = new VirtualPoint();
+                    VirtualPoint endPoint = new VirtualPoint();
 
                     if (!string.IsNullOrEmpty(lines[caretPoint.Line - 1].Trim()))
                     {
-                        
-                        VirtualPoint startPoint = new VirtualPoint();
-                        VirtualPoint endPoint = new VirtualPoint();
-
                         if (caretPoint.Line == 1) // 첫번째 라인이라면
                         {
                             startPoint.Line = 1;
@@ -281,7 +279,7 @@ namespace DaviSqlSsms
                         }
                         else
                         {
-                            // 내 라인은 공백이 아니고 위라인은 공백일때까지 루핑해 startPoint를 채움
+                            // 현재 라인 공백이 아닌경우에 상위라인이 공백인 경우 찾을때까지 루핑해 startPoint 채움
                             for (int currentLine = (caretPoint.Line - 1); currentLine > 0; currentLine--)
                             {
                                 if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine - 1].Trim()))
@@ -310,8 +308,6 @@ namespace DaviSqlSsms
                                     break;
                                 }
                             }
-
-                            //MakeSelection(startPoint, endPoint);
                         }
 
                         MakeSelection(startPoint, endPoint);

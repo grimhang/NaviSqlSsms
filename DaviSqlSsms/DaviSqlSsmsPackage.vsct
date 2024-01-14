@@ -25,7 +25,7 @@
         <!--<Icon guid="guidImages" id="bmpPic1" />-->
         <CommandFlag>TextOnly</CommandFlag>
         <Strings>
-          <ButtonText>Lang AutoFix</ButtonText>
+          <ButtonText>AutoFix Lang</ButtonText>
         </Strings>
       </Button>
       
@@ -35,7 +35,7 @@
         <CommandFlag>TextOnly</CommandFlag>
         <Strings>
           <CommandName>DaviSqlSsms.ExecuteCurrentStatement</CommandName>
-          <ButtonText>Select/Execute Sql</ButtonText>
+          <ButtonText>Easy Select Sql</ButtonText>
         </Strings>
       </Button>
     </Buttons>

@@ -3,14 +3,14 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 
 
 # 기능
-- Sql Selector : SSMS 편집기에서 커서의 위치 쿼리만 선택 하거나 실행할수 있는 확장기능.                  
+- Easy Select : SSMS 편집기에서 커서의 위치 쿼리만 선택 하거나 실행할수 있는 확장기능.                  
                     
 - Advanced Selector 기능 추가
-                SSMS 텍스트 편집기 본문중 에러가 있는 구문이 하나라도 존재하면 위의 Sql Selector 기능
-                작동 안함. (TrasactSqlDom 구조상 당연)
+                SSMS 텍스트 편집기 본문중 에러가 있는 구문이 하나라도 존재하면 위의 Easy Select 작동 안함.
+                (TrasactSqlDom 구조상 당연)
                 이럴 경우 강제로 현재커서위치의 위/아래 공백라인까지만 선택되도록 함.
                     
-- Lang AutoFix : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
+- AutoFix Lang : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
 
 # 설치
 [Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.5/DaviSqlSsms_V0.9.5.zip)
@@ -24,12 +24,12 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 
 # 사용법
 
-#### 1. Sql Selector
+#### 1. Easy Select
     SSMS에 DaviSql 라는 메뉴가 생긴다.  
 
     Ctrl + Shift + 엔터를 치면 커서위치 sql만 선택. 한번더 치면 sql 실행.
 
-#### 2. Lang AutoFix
+#### 2. AutoFix Lang
     DaviSql 메뉴에 Lang AutoFix 클릭하면 알림팝업이 뜸. 가끔씩 한글로 고정되는 SSMS문제 자동 교정.  
 
     실시간으로 교정되는지 보려면 메뉴 / 보기 / 출력(Ctrl + Alt + O) 클릭 후에  

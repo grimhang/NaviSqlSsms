@@ -265,53 +265,66 @@ namespace DaviSqlSsms
                 {
                     // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면 tsqlparser가 작동이 안되기 때문에 
                     // 강제로 현재 문장의 위/아래쪽 공백까지 선택하게
-                    string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
                     VirtualPoint startPoint = new VirtualPoint();
                     VirtualPoint endPoint = new VirtualPoint();
 
-                    if (!string.IsNullOrEmpty(lines[caretPoint.Line - 1].Trim()))
+
+                    //string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+                    var daviParser = new DaviParser();
+
+                    bool result = daviParser.CustomParse(script, caretPoint, ref startPoint, ref endPoint);
+
+                    if (result)
                     {
-                        if (caretPoint.Line == 1) // 첫번째 라인이라면
-                        {
-                            startPoint.Line = 1;
-                            startPoint.LineCharOffset = 1;
-                        }
-                        else
-                        {
-                            // 현재 라인 공백이 아닌경우에 상위라인이 공백인 경우 찾을때까지 루핑해 startPoint 채움
-                            for (int currentLine = (caretPoint.Line - 1); currentLine > 0; currentLine--)
-                            {
-                                if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine - 1].Trim()))
-                                {
-                                    startPoint.Line = currentLine + 1;
-                                    startPoint.LineCharOffset = 1;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (caretPoint.Line == lines.Length) // 마지막 라인이라면
-                        {
-                            endPoint.Line = caretPoint.Line;
-                            endPoint.LineCharOffset = lines[caretPoint.Line - 1].Length + 1;
-                        }
-                        else
-                        {
-                            // 내 라인은 공백이 아니고 아래라인은 공백일때까지 루핑해 endPoint를 채움
-                            for (int currentLine = (caretPoint.Line - 1); currentLine < (lines.Length - 1); currentLine++)
-                            {
-                                if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine + 1].Trim()))
-                                {
-                                    endPoint.Line = (currentLine + 1);
-                                    endPoint.LineCharOffset = lines[currentLine].Length + 1;
-                                    break;
-                                }
-                            }
-                        }
-
                         MakeSelection(startPoint, endPoint);
                     }
+
+                    /*
+                    if (caretPoint.Line == 1) // 첫번째 라인이라면
+                    {
+                        startPoint.Line = 1;
+                        startPoint.LineCharOffset = 1;
+                    }
+                    else
+                    {
+                        // 현재 라인 공백이 아닌경우에 상위라인이 공백인 경우 찾을때까지 루핑해 startPoint 채움
+                        for (int currentLine = (caretPoint.Line - 1); currentLine > 0; currentLine--)
+                        {
+                            if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine - 1].Trim()))
+                            {
+                                startPoint.Line = currentLine + 1;
+                                startPoint.LineCharOffset = 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (caretPoint.Line == lines.Length) // 마지막 라인이라면
+                    {
+                        endPoint.Line = caretPoint.Line;
+                        endPoint.LineCharOffset = lines[caretPoint.Line - 1].Length + 1;
+                    }
+                    else
+                    {
+                        // 내 라인은 공백이 아니고 아래라인은 공백일때까지 루핑해 endPoint를 채움
+                        for (int currentLine = (caretPoint.Line - 1); currentLine < (lines.Length - 1); currentLine++)
+                        {
+                            if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine + 1].Trim()))
+                            {
+                                endPoint.Line = (currentLine + 1);
+                                endPoint.LineCharOffset = lines[currentLine].Length + 1;
+                                break;
+                            }
+                        }
+                    }
+                    */
+
+                    
+
+
+
                     /*
                     if (currentStatement != null)
                     {
@@ -384,31 +397,6 @@ namespace DaviSqlSsms
 
         }
         */
-
-        public class VirtualPoint
-        {
-            public int Line { get; set; }
-            public int LineCharOffset { get; set; }
-
-            public VirtualPoint()
-            {
-                Line = 1;
-                LineCharOffset = 0;
-            }
-
-            public VirtualPoint(EnvDTE.TextPoint point)
-            {
-                ThreadHelper.ThrowIfNotOnUIThread();
-                Line = point.Line;
-                LineCharOffset = point.LineCharOffset;
-            }
-        }
-
-        public class TextBlock
-        {
-            public VirtualPoint StartPoint { get; set; }
-            public VirtualPoint EndPoint { get; set; }
-        }
 
         internal enum ExecScope
         {

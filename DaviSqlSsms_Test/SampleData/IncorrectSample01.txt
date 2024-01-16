@@ -1,0 +1,10 @@
+﻿aa
+
+select *
+from Ahouse
+
+select * from Item
+
+select * from Realm
+
+tt 영어에서

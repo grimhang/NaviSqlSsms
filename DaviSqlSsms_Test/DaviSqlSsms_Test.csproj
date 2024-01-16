@@ -93,7 +93,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SampleData\IncorrectSample01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SampleUnitTest1.cs.txt" />
+    <Compile Include="DaviParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +114,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DaviSqlSsms\DaviSqlSsms.csproj">
+      <Project>{437f1dbd-e6ea-46e1-9698-e6461b6493f5}</Project>
+      <Name>DaviSqlSsms</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

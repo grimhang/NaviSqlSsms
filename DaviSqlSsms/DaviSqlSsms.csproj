@@ -57,6 +57,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DaviParser.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="ExecutorCommand.cs" />
     <Compile Include="DaviSqlSsmsPackage.cs" />
@@ -67,6 +68,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="VirtualPoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

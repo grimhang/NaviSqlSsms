@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.34112.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaviSqlSsms", "DaviSqlSsms\DaviSqlSsms.csproj", "{437F1DBD-E6EA-46E1-9698-E6461B6493F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaviSqlSsms_Test", "DaviSqlSsms_Test\DaviSqlSsms_Test.csproj", "{B0D91AE7-36E9-4B22-A845-0D429AAB0F16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{437F1DBD-E6EA-46E1-9698-E6461B6493F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{437F1DBD-E6EA-46E1-9698-E6461B6493F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{437F1DBD-E6EA-46E1-9698-E6461B6493F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D91AE7-36E9-4B22-A845-0D429AAB0F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D91AE7-36E9-4B22-A845-0D429AAB0F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D91AE7-36E9-4B22-A845-0D429AAB0F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D91AE7-36E9-4B22-A845-0D429AAB0F16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

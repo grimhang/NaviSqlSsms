@@ -1,0 +1,3 @@
+﻿select * from Item
+
+aaaa --요줄도 정상적인 쿼리라고 인식함

@@ -93,11 +93,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SampleData\IncorrectSample01.txt">
+    <Content Include="SampleData\IncompleteSample01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleData\InvalidSample01.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleUnitTest1.cs.txt" />
-    <Compile Include="DaviParserTest.cs" />
+    <Compile Include="DaviParserTest_InvalidSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

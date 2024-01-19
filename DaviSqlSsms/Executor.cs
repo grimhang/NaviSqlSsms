@@ -86,6 +86,7 @@ namespace DaviSqlSsms
         {
             IList<ParseError> errors;
             TSql140Parser parser = new TSql140Parser(true);
+            //TSql160Parser parser = new TSql160Parser(true);
 
             using (System.IO.StringReader reader = new System.IO.StringReader(script))
             {

@@ -31,7 +31,7 @@ namespace DaviSqlSsms
             ThreadHelper.ThrowIfNotOnUIThread();
             var p = ((TextSelection)document.Selection).ActivePoint;
 
-            return new VirtualPoint(p);
+            return new VirtualPoint(p.Line, p.LineCharOffset);
         }
 
         private string GetDocumentText()
@@ -66,8 +66,9 @@ namespace DaviSqlSsms
 
         private void RestoreActiveAndAnchorPoints()
         {
-            var startPoint = new VirtualPoint(oldAnchor);
-            var endPoint = new VirtualPoint(oldActivePoint);
+            ThreadHelper.ThrowIfNotOnUIThread();
+            var startPoint = new VirtualPoint(oldAnchor.Line, oldAnchor.LineCharOffset);
+            var endPoint = new VirtualPoint(oldActivePoint.Line, oldActivePoint.LineCharOffset);
 
             MakeSelection(startPoint, endPoint);
         }

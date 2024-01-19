@@ -18,11 +18,20 @@ namespace DaviSqlSsms
             LineCharOffset = 0;
         }
 
+        /*
         public VirtualPoint(EnvDTE.TextPoint point)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             Line = point.Line;
             LineCharOffset = point.LineCharOffset;
+        }
+        */
+
+        public VirtualPoint(int line, int lineCharOffset)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            Line = line;
+            LineCharOffset = lineCharOffset;
         }
     }
 

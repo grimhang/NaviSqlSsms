@@ -119,6 +119,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DaviParserLib\DaviParserLib.csproj">
+      <Project>{41cd9742-016d-4f14-bcb8-906175a4aa1a}</Project>
+      <Name>DaviParserLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DaviSqlSsms\DaviSqlSsms.csproj">
       <Project>{437f1dbd-e6ea-46e1-9698-e6461b6493f5}</Project>
       <Name>DaviSqlSsms</Name>

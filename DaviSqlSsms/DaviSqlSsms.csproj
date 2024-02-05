@@ -57,7 +57,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DaviParser.cs" />
+    <Compile Include="DaviParserNotUse2.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="ExecutorCommand.cs" />
     <Compile Include="DaviSqlSsmsPackage.cs" />
@@ -68,7 +68,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="VirtualPoint.cs" />
+    <Compile Include="VirtualPointNotuse2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
@@ -188,6 +188,12 @@
       <ManifestResourceName>VSPackage</ManifestResourceName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DaviParserLib\DaviParserLib.csproj">
+      <Project>{41cd9742-016d-4f14-bcb8-906175a4aa1a}</Project>
+      <Name>DaviParserLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

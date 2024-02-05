@@ -1,18 +1,17 @@
-﻿using Microsoft.VisualStudio.Shell;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DaviSqlSsms
+namespace DaviParserLib
 {
-    public class VirtualPoint
+    public class DaviTextPoint
     {
         public int Line { get; set; }
         public int LineCharOffset { get; set; }
 
-        public VirtualPoint()
+        public DaviTextPoint()
         {
             Line = 1;
             LineCharOffset = 0;
@@ -27,17 +26,16 @@ namespace DaviSqlSsms
         }
         */
 
-        public VirtualPoint(int line, int lineCharOffset)
+        public DaviTextPoint(int line, int lineCharOffset)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
             Line = line;
             LineCharOffset = lineCharOffset;
         }
     }
 
-    public class TextBlock
+    public class DaviTextBlock
     {
-        public VirtualPoint StartPoint { get; set; }
-        public VirtualPoint EndPoint { get; set; }
+        public DaviTextPoint StartPoint { get; set; }
+        public DaviTextPoint EndPoint { get; set; }
     }
 }

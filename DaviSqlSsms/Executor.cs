@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Shell;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
+using DaviParserLib;
 
 namespace DaviSqlSsms
 {
@@ -26,12 +27,12 @@ namespace DaviSqlSsms
             SaveActiveAndAnchorPoints();
         }
 
-        private VirtualPoint GetCaretPoint()
+        private DaviTextPoint GetCaretPoint()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             var p = ((TextSelection)document.Selection).ActivePoint;
 
-            return new VirtualPoint(p.Line, p.LineCharOffset);
+            return new DaviTextPoint(p.Line, p.LineCharOffset);
         }
 
         private string GetDocumentText()
@@ -67,13 +68,13 @@ namespace DaviSqlSsms
         private void RestoreActiveAndAnchorPoints()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var startPoint = new VirtualPoint(oldAnchor.Line, oldAnchor.LineCharOffset);
-            var endPoint = new VirtualPoint(oldActivePoint.Line, oldActivePoint.LineCharOffset);
+            var startPoint = new DaviParserLib.DaviTextPoint(oldAnchor.Line, oldAnchor.LineCharOffset);
+            var endPoint = new DaviParserLib.DaviTextPoint(oldActivePoint.Line, oldActivePoint.LineCharOffset);
 
             MakeSelection(startPoint, endPoint);
         }
 
-        private void MakeSelection(VirtualPoint startPoint, VirtualPoint endPoint)
+        private void MakeSelection(DaviParserLib.DaviTextPoint startPoint, DaviParserLib.DaviTextPoint endPoint)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             var selection = (TextSelection)document.Selection;
@@ -124,7 +125,7 @@ namespace DaviSqlSsms
             return list;
         }
 
-        private bool IsCaretInsideStatement(TSqlStatement statement, VirtualPoint caret)
+        private bool IsCaretInsideStatement(TSqlStatement statement, DaviParserLib.DaviTextPoint caret)
         {
             var ft = statement.ScriptTokenStream[statement.FirstTokenIndex];
             var lt = statement.ScriptTokenStream[statement.LastTokenIndex];
@@ -143,20 +144,20 @@ namespace DaviSqlSsms
             return false;
         }
 
-        private TextBlock GetTextBlockFromStatement(TSqlStatement statement)
+        private DaviTextBlock GetTextBlockFromStatement(TSqlStatement statement)
         {
             var ft = statement.ScriptTokenStream[statement.FirstTokenIndex];
             var lt = statement.ScriptTokenStream[statement.LastTokenIndex];
 
-            return new TextBlock()
+            return new DaviTextBlock()
             {
-                StartPoint = new VirtualPoint
+                StartPoint = new DaviParserLib.DaviTextPoint
                 {
                     Line = ft.Line,
                     LineCharOffset = ft.Column
                 },
 
-                EndPoint = new VirtualPoint
+                EndPoint = new DaviParserLib.DaviTextPoint
                 {
                     Line = lt.Line,
                     LineCharOffset = lt.Column + lt.Text.Length
@@ -164,7 +165,7 @@ namespace DaviSqlSsms
             };
         }
 
-        private TextBlock FindCurrentStatement(IList<TSqlStatement> statements, VirtualPoint caret, ExecScope scope)
+        private DaviTextBlock FindCurrentStatement(IList<TSqlStatement> statements, DaviParserLib.DaviTextPoint caret, ExecScope scope)
         {
             if (statements == null || statements.Count == 0)
             {
@@ -177,7 +178,7 @@ namespace DaviSqlSsms
                 {
                     IList<TSqlStatement> statementList = GetInnerStatements(statement);
 
-                    TextBlock currentStatement = FindCurrentStatement(statementList, caret, scope);
+                    DaviTextBlock currentStatement = FindCurrentStatement(statementList, caret, scope);
 
                     if (currentStatement != null)
                     {
@@ -239,7 +240,7 @@ namespace DaviSqlSsms
 
                 if (success)
                 {
-                    TextBlock currentStatement = null;
+                    DaviTextBlock currentStatement = null;
 
                     foreach (var batch in sqlScript?.Batches)
                     {
@@ -268,13 +269,13 @@ namespace DaviSqlSsms
                     // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면 tsqlparser가 작동이 안되기 때문에 
                     // 강제로 현재 문장의 위/아래쪽 공백까지 선택하게
 
-                    VirtualPoint startPoint = new VirtualPoint();
-                    VirtualPoint endPoint = new VirtualPoint();
+                    DaviParserLib.DaviTextPoint startPoint = new DaviParserLib.DaviTextPoint();
+                    DaviParserLib.DaviTextPoint endPoint = new DaviParserLib.DaviTextPoint();
 
 
                     //string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
-                    var daviParser = new DaviParser();
+                    var daviParser = new DaviParser();// DaviParser();
 
                     bool result = daviParser.CustomParse(script, caretPoint, ref startPoint, ref endPoint);
 

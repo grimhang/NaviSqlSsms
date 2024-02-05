@@ -1,4 +1,5 @@
-﻿using DaviSqlSsms;
+﻿using DaviParserLib;
+using DaviSqlSsms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,13 +12,13 @@ namespace DaviSqlSsms_Test
 {
     public class DaviParserTest_InvalidSample
     {
-        private VirtualPoint caretPoint = new VirtualPoint();
-        private VirtualPoint startPoint = new VirtualPoint();
-        private VirtualPoint endPoint = new VirtualPoint();
+        private DaviTextPoint caretPoint = new DaviTextPoint();
+        private DaviTextPoint startPoint = new DaviTextPoint();
+        private DaviTextPoint endPoint = new DaviTextPoint();
 
         private DaviParser daviParser = new DaviParser();
 
-        private string sampleData = File.ReadAllText($"{System.Environment.CurrentDirectory}/SampleData/{"InvalidSample01.txt"}");
+        private string sampleData = File.ReadAllText($"{Environment.CurrentDirectory}/SampleData/{"InvalidSample01.txt"}");
 
         [Fact]
         public void CustomParse_BlankLine_ReturnFalse()

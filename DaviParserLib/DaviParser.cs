@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static DaviSqlSsms.Executor;
 
-namespace DaviSqlSsms
+namespace DaviParserLib
 {
     public class DaviParser
     {
-        public bool CustomParse(string script, VirtualPoint caretPoint, ref VirtualPoint startPoint, ref VirtualPoint endPoint)
+        public bool CustomParse(string script, DaviTextPoint caretPoint, ref DaviTextPoint startPoint, ref DaviTextPoint endPoint)
         {
             string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 

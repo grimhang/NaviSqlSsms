@@ -80,7 +80,7 @@ namespace DaviSqlSsms
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await ExecutorCommand.InitializeAsync(this);
 
-            DaviSqlSsmsInit();
+            DaviSqlSsmsInit(); //초기화
         }
 
         #endregion

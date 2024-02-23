@@ -79,6 +79,7 @@ namespace DaviSqlSsms
             ThreadHelper.ThrowIfNotOnUIThread();
             var selection = (TextSelection)document.Selection;
 
+            //MoveToLineAndOffset에서 LineCharOffset이 0이면 에러남. 첫줄 첫번째는  1, 1임
             selection.MoveToLineAndOffset(startPoint.Line, startPoint.LineCharOffset);
             selection.SwapAnchor();
             selection.MoveToLineAndOffset(endPoint.Line, endPoint.LineCharOffset, true);
@@ -266,16 +267,13 @@ namespace DaviSqlSsms
                 }
                 else
                 {
-                    // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면 tsqlparser가 작동이 안되기 때문에 
+                    // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면 TSQLDom의 tsqlparser가 작동이 안되기 때문에 
                     // 강제로 현재 문장의 위/아래쪽 공백까지 선택하게
 
-                    DaviParserLib.DaviTextPoint startPoint = new DaviParserLib.DaviTextPoint();
-                    DaviParserLib.DaviTextPoint endPoint = new DaviParserLib.DaviTextPoint();
+                    DaviTextPoint startPoint = new DaviTextPoint();
+                    DaviTextPoint endPoint = new DaviTextPoint();
 
-
-                    //string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-
-                    var daviParser = new DaviParser();// DaviParser();
+                    var daviParser = new DaviParser();
 
                     bool result = daviParser.CustomParse(script, caretPoint, ref startPoint, ref endPoint);
 

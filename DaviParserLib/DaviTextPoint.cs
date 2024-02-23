@@ -12,9 +12,8 @@ namespace DaviParserLib
         public int LineCharOffset { get; set; }
 
         public DaviTextPoint()
-        {
-            Line = 1;
-            LineCharOffset = 0;
+            : this(1, 1)
+        {            
         }
 
         /*

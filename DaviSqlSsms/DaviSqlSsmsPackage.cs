@@ -3,9 +3,11 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using DaviSqlSsms.Properties;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
@@ -77,8 +79,20 @@ namespace DaviSqlSsms
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await ExecutorCommand.InitializeAsync(this);
+
+            DaviSqlSsmsInit();
         }
 
         #endregion
+
+        private void DaviSqlSsmsInit()
+        {
+            string settingFolderPath = Resources.FolderPath;
+            //폴더 생성
+            if (!Directory.Exists(settingFolderPath))
+            {
+                Directory.CreateDirectory(settingFolderPath);
+            }
+        }
     }
 }

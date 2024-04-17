@@ -6,46 +6,68 @@ namespace DaviParserLib
     {
         public bool CustomParse(string script, DaviTextPoint caretPoint, ref DaviTextPoint startPoint, ref DaviTextPoint endPoint)
         {
-            string[] lines = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] strLineArr = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
             //VirtualPoint startPoint = new VirtualPoint();
             //VirtualPoint endPoint = new VirtualPoint();
 
-            if (!string.IsNullOrEmpty(lines[caretPoint.Line - 1].Trim()))
+            // 현재 라인이 공백이 아닌경우에만
+            if (!string.IsNullOrWhiteSpace(strLineArr[caretPoint.Line - 1]))
             {
-                if (caretPoint.Line == 1) // 첫번째 라인이라면
+                // 01. startPoint 구하기
+                if (caretPoint.Line == 1) // 현재 위치가 첫번째 라인이라면
                 {
                     startPoint.Line = 1;
                     startPoint.LineCharOffset = 1;
                 }
                 else
                 {
-                    // 현재 라인 공백이 아닌경우에 상위라인이 공백인 경우 찾을때까지 루핑해 startPoint 채움
-                    for (int currentLine = (caretPoint.Line - 1); currentLine > 0; currentLine--)
+                    // 상위라인이 공백인 경우 찾을때까지 루핑해 startPoint 채움
+                    for (int curLine = (caretPoint.Line - 1); curLine > 0; curLine--)
                     {
-                        if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine - 1].Trim()))
+                        if (string.IsNullOrWhiteSpace(strLineArr[curLine - 1]))
                         {
-                            startPoint.Line = currentLine + 1;
+                            startPoint.Line = curLine + 1;
                             startPoint.LineCharOffset = 1;
                             break;
                         }
                     }
+
+                    /*
+                    for (int curLine = (caretPoint.Line - 1); curLine > 0; curLine--)
+                    {
+                        if (!string.IsNullOrWhiteSpace(strLineArr[curLine]) && string.IsNullOrWhiteSpace(strLineArr[curLine - 1]))
+                        {
+                            startPoint.Line = curLine + 1;
+                            startPoint.LineCharOffset = 1;
+                            break;
+                        }
+                    }
+                    */
                 }
 
-                if (caretPoint.Line == lines.Length) // 마지막 라인이라면
+                // 02. endPoint 구하기
+                if (caretPoint.Line == strLineArr.Length) // 현재 위치가 마지막 라인이라면
                 {
                     endPoint.Line = caretPoint.Line;
-                    endPoint.LineCharOffset = lines[caretPoint.Line - 1].Length + 1;
+                    endPoint.LineCharOffset = strLineArr[caretPoint.Line - 1].Length + 1;
                 }
                 else
                 {
-                    // 내 라인은 공백이 아니고 아래라인은 공백일때까지 루핑해 endPoint를 채움
-                    for (int currentLine = (caretPoint.Line - 1); currentLine < (lines.Length - 1); currentLine++)
+                    // 현재 위치가 끝에서 두번째 라인이거나 또는 다음 라인이 공백이면 endPoint에 저장
+                    for (int curLine = caretPoint.Line; curLine < strLineArr.Length; curLine++)
                     {
-                        if (!string.IsNullOrEmpty(lines[currentLine].Trim()) && string.IsNullOrEmpty(lines[currentLine + 1].Trim()))
+                        if (string.IsNullOrWhiteSpace(strLineArr[curLine]))
                         {
-                            endPoint.Line = (currentLine + 1);
-                            endPoint.LineCharOffset = lines[currentLine].Length + 1;
+                            endPoint.Line = curLine;
+                            endPoint.LineCharOffset = strLineArr[curLine - 1].Length + 1;
+                            break;
+                        }
+
+                        if (curLine == strLineArr.Length - 1)
+                        {
+                            endPoint.Line = (curLine + 1);
+                            endPoint.LineCharOffset = strLineArr[curLine].Length + 1;
                             break;
                         }
                     }

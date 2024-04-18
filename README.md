@@ -15,10 +15,11 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 [Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.9/DaviSqlSsms_V0.9.9.zip)
            
     압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
-     C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
+    SSMS19 -> C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
+	SSMS20 -> C:\Program Files (x86)\Microsoft SQL Server Management Studio 20\Common7\IDE\Extensions\  
 
     복사할때 관리자 권한 물어볼수도 있음.  
-    현재 SSMS 19.x에서만 테스트해봄
+    현재 SSMS 19이상 에서만 테스트해봄
 
 
 # 사용법

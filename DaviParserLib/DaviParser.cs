@@ -8,26 +8,18 @@ namespace DaviParserLib
         {
             string[] strLineArr = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
-            //VirtualPoint startPoint = new VirtualPoint();
-            //VirtualPoint endPoint = new VirtualPoint();
-
             // 현재 라인이 공백이 아닌경우에만
             if (!string.IsNullOrWhiteSpace(strLineArr[caretPoint.Line - 1]))
             {
                 // 01. startPoint 구하기
-                if (caretPoint.Line == 1) // 현재 위치가 첫번째 라인이라면
-                {
-                    startPoint.Line = 1;
-                    startPoint.LineCharOffset = 1;
-                }
-                else
+                if (caretPoint.Line > 1)
                 {
                     // 상위라인이 공백인 경우 찾을때까지 루핑해 startPoint 채움
-                    for (int curLine = (caretPoint.Line - 1); curLine > 0; curLine--)
+                    for (int curLine = caretPoint.Line; curLine > 1; curLine--)
                     {
-                        if (string.IsNullOrWhiteSpace(strLineArr[curLine - 1]))
+                        if (string.IsNullOrWhiteSpace(strLineArr[curLine - 2])) // 윗줄이 공백이면
                         {
-                            startPoint.Line = curLine + 1;
+                            startPoint.Line = curLine;
                             startPoint.LineCharOffset = 1;
                             break;
                         }

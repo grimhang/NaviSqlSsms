@@ -121,7 +121,7 @@
     <value>HanEngConfig.txt</value>
   </data>
   <data name="FolderPath" xml:space="preserve">
-    <value>C:\DaviSqlSsms</value>
+    <value>C:\NaviSqlSsms</value>
   </data>
   <data name="LogFileNamePrefix" xml:space="preserve">
     <value>Log_</value>

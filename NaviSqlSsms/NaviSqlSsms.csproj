@@ -24,8 +24,8 @@
     <ProjectGuid>{437F1DBD-E6EA-46E1-9698-E6461B6493F5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DaviSqlSsms</RootNamespace>
-    <AssemblyName>DaviSqlSsms</AssemblyName>
+    <RootNamespace>NaviSqlSsms</RootNamespace>
+    <AssemblyName>NaviSqlSsms</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
@@ -46,7 +46,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>
-    <CopyVsixExtensionLocation>c:\Program Files %28x86%29\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\DaviSqlSsms</CopyVsixExtensionLocation>
+    <CopyVsixExtensionLocation>c:\Program Files %28x86%29\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\NaviSqlSsms</CopyVsixExtensionLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,10 +57,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DaviParserNotUse2.cs" />
+    <Compile Include="NaviParserNotUse2.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="ExecutorCommand.cs" />
-    <Compile Include="DaviSqlSsmsPackage.cs" />
+    <Compile Include="NaviSqlSsmsPackage.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -78,11 +78,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <VSCTCompile Include="DaviSqlSsmsPackage.vsct">
+    <VSCTCompile Include="NaviSqlSsmsPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <Content Include="Resources\DaviSqlSsms.png" />
-    <Content Include="Resources\DaviSqlSsmsPackage.ico" />
+    <Content Include="Resources\NaviSqlSsms.png" />
+    <Content Include="Resources\NaviSqlSsmsPackage.ico" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -190,9 +190,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DaviParserLib\DaviParserLib.csproj">
+    <ProjectReference Include="..\NaviParserLib\NaviParserLib.csproj">
       <Project>{41cd9742-016d-4f14-bcb8-906175a4aa1a}</Project>
-      <Name>DaviParserLib</Name>
+      <Name>NaviParserLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

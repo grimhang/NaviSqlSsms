@@ -1,4 +1,4 @@
-﻿using DaviSqlSsms.Properties;
+﻿using NaviSqlSsms.Properties;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Windows.Forms;
 using Task = System.Threading.Tasks.Task;
 
-namespace DaviSqlSsms
+namespace NaviSqlSsms
 {
     /// <summary>
     /// Command handler
@@ -207,7 +207,7 @@ namespace DaviSqlSsms
                 //OutputWindow.OutputString($"{DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss")} 감시 시작" + Environment.NewLine);
 
                 paneGuid = new Guid();
-                CreatePane(paneGuid, "DaviSql SSMS", true, false);
+                CreatePane(paneGuid, "NaviSql SSMS", true, false);
 
                 //File.AppendAllText(logFileFullPath, $"{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")} : AutoFix Start --> Start{GetIME()}" + Environment.NewLine);
                 string writeMsg = $"AutoFix Start ({GetIME()})";
@@ -267,7 +267,7 @@ namespace DaviSqlSsms
 
         private static void WriteHanEngType(string inputString)
         {
-            string folderName = Resources.FolderPath;    // 파일 위치. 리소스 문자열로 변경 "C:\DaviSqlSsms";
+            string folderName = Resources.FolderPath;    // 파일 위치. 리소스 문자열로 변경 "C:\NaviSqlSsms";
 
             DirectoryInfo di = new DirectoryInfo(folderName);
             if (di.Exists == false)

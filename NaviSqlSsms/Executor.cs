@@ -5,9 +5,9 @@ using Microsoft.VisualStudio.Shell;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
-using DaviParserLib;
+using NaviParserLib;
 
-namespace DaviSqlSsms
+namespace NaviSqlSsms
 {
     sealed class Executor
     {
@@ -27,12 +27,12 @@ namespace DaviSqlSsms
             SaveActiveAndAnchorPoints();
         }
 
-        private DaviTextPoint GetCaretPoint()
+        private NaviTextPoint GetCaretPoint()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             var p = ((TextSelection)document.Selection).ActivePoint;
 
-            return new DaviTextPoint(p.Line, p.LineCharOffset);
+            return new NaviTextPoint(p.Line, p.LineCharOffset);
         }
 
         private string GetDocumentText()
@@ -68,13 +68,13 @@ namespace DaviSqlSsms
         private void RestoreActiveAndAnchorPoints()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var startPoint = new DaviParserLib.DaviTextPoint(oldAnchor.Line, oldAnchor.LineCharOffset);
-            var endPoint = new DaviParserLib.DaviTextPoint(oldActivePoint.Line, oldActivePoint.LineCharOffset);
+            var startPoint = new NaviParserLib.NaviTextPoint(oldAnchor.Line, oldAnchor.LineCharOffset);
+            var endPoint = new NaviParserLib.NaviTextPoint(oldActivePoint.Line, oldActivePoint.LineCharOffset);
 
             MakeSelection(startPoint, endPoint);
         }
 
-        private void MakeSelection(DaviParserLib.DaviTextPoint startPoint, DaviParserLib.DaviTextPoint endPoint)
+        private void MakeSelection(NaviParserLib.NaviTextPoint startPoint, NaviParserLib.NaviTextPoint endPoint)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             var selection = (TextSelection)document.Selection;
@@ -126,7 +126,7 @@ namespace DaviSqlSsms
             return list;
         }
 
-        private bool IsCaretInsideStatement(TSqlStatement statement, DaviParserLib.DaviTextPoint caret)
+        private bool IsCaretInsideStatement(TSqlStatement statement, NaviParserLib.NaviTextPoint caret)
         {
             var ft = statement.ScriptTokenStream[statement.FirstTokenIndex];
             var lt = statement.ScriptTokenStream[statement.LastTokenIndex];
@@ -152,13 +152,13 @@ namespace DaviSqlSsms
 
             return new DaviTextBlock()
             {
-                StartPoint = new DaviParserLib.DaviTextPoint
+                StartPoint = new NaviParserLib.NaviTextPoint
                 {
                     Line = ft.Line,
                     LineCharOffset = ft.Column
                 },
 
-                EndPoint = new DaviParserLib.DaviTextPoint
+                EndPoint = new NaviParserLib.NaviTextPoint
                 {
                     Line = lt.Line,
                     LineCharOffset = lt.Column + lt.Text.Length
@@ -166,7 +166,7 @@ namespace DaviSqlSsms
             };
         }
 
-        private DaviTextBlock FindCurrentStatement(IList<TSqlStatement> statements, DaviParserLib.DaviTextPoint caret, ExecScope scope)
+        private DaviTextBlock FindCurrentStatement(IList<TSqlStatement> statements, NaviParserLib.NaviTextPoint caret, ExecScope scope)
         {
             if (statements == null || statements.Count == 0)
             {
@@ -270,8 +270,8 @@ namespace DaviSqlSsms
                     // 편집기 전체내용중에 오류가 있는 문장이 한개라도 있다면 TSQLDom의 tsqlparser가 작동이 안되기 때문에 
                     // 강제로 현재 문장의 위/아래쪽 공백까지 선택하게
 
-                    DaviTextPoint startPoint = new DaviTextPoint();
-                    DaviTextPoint endPoint = new DaviTextPoint();
+                    NaviTextPoint startPoint = new NaviTextPoint();
+                    NaviTextPoint endPoint = new NaviTextPoint();
 
                     var daviParser = new DaviParser();
 

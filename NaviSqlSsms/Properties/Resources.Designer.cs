@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DaviSqlSsms.Properties {
+namespace NaviSqlSsms.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace DaviSqlSsms.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DaviSqlSsms.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NaviSqlSsms.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,7 +70,7 @@ namespace DaviSqlSsms.Properties {
         }
         
         /// <summary>
-        ///   C:\DaviSqlSsms과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   C:\NaviSqlSsms과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string FolderPath {
             get {

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.34112.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaviSqlSsms", "DaviSqlSsms\DaviSqlSsms.csproj", "{437F1DBD-E6EA-46E1-9698-E6461B6493F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NaviSqlSsms", "NaviSqlSsms\NaviSqlSsms.csproj", "{437F1DBD-E6EA-46E1-9698-E6461B6493F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaviSqlSsms_Test", "DaviSqlSsms_Test\DaviSqlSsms_Test.csproj", "{B0D91AE7-36E9-4B22-A845-0D429AAB0F16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_NaviSqlSsms", "Test_DaviSqlSsms\Test_NaviSqlSsms.csproj", "{B0D91AE7-36E9-4B22-A845-0D429AAB0F16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaviParserLib", "DaviParserLib\DaviParserLib.csproj", "{41CD9742-016D-4F14-BCB8-906175A4AA1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NaviParserLib", "NaviParserLib\NaviParserLib.csproj", "{41CD9742-016D-4F14-BCB8-906175A4AA1A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{769E7854-085D-4EDF-A412-A29E0A44C174}"
 	ProjectSection(SolutionItems) = preProject

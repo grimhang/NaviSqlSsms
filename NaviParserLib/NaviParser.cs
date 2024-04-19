@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace DaviParserLib
+namespace NaviParserLib
 {
     public class DaviParser
     {
-        public bool CustomParse(string script, DaviTextPoint caretPoint, ref DaviTextPoint startPoint, ref DaviTextPoint endPoint)
+        public bool CustomParse(string script, NaviTextPoint caretPoint, ref NaviTextPoint startPoint, ref NaviTextPoint endPoint)
         {
             string[] strLineArr = script.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 

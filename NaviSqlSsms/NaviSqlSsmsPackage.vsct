@@ -3,25 +3,25 @@
   <Extern href="stdidcmd.h"/>
   <Extern href="vsshlids.h"/>
 
-  <Commands package="guidDaviSqlSsmsPackage">
+  <Commands package="guidNaviSqlSsmsPackage">
     <Groups>
-      <Group guid="guidDaviSqlSsmsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidDaviSqlSsmsPackageCmdSet" id="TopLevelMenu"/>
+      <Group guid="guidNaviSqlSsmsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidNaviSqlSsmsPackageCmdSet" id="TopLevelMenu"/>
       </Group>
     </Groups>
 
     <Menus>
-      <Menu guid="guidDaviSqlSsmsPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
+      <Menu guid="guidNaviSqlSsmsPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS" />
         <Strings>
-          <ButtonText>DaviSql</ButtonText>
+          <ButtonText>NaviSqlSsms</ButtonText>
         </Strings>
       </Menu>
     </Menus>
     
     <Buttons>
-      <Button guid="guidDaviSqlSsmsPackageCmdSet" id="cmdIdImeAutoFix" priority="0x0100" type="Button">
-        <Parent guid="guidDaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidNaviSqlSsmsPackageCmdSet" id="cmdIdImeAutoFix" priority="0x0100" type="Button">
+        <Parent guid="guidNaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
         <!--<Icon guid="guidImages" id="bmpPic1" />-->
         <CommandFlag>TextOnly</CommandFlag>
         <Strings>
@@ -29,12 +29,12 @@
         </Strings>
       </Button>
       
-      <Button guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" priority="0x0101" type="Button">
-        <Parent guid="guidDaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidNaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" priority="0x0101" type="Button">
+        <Parent guid="guidNaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
         <!--<Icon guid="guidImages" id="bmpPic1" />-->
         <CommandFlag>TextOnly</CommandFlag>
         <Strings>
-          <CommandName>DaviSqlSsms.ExecuteCurrentStatement</CommandName>
+          <CommandName>NaviSqlSsms.ExecuteCurrentStatement</CommandName>
           <ButtonText>Easy Select Sql</ButtonText>
         </Strings>
       </Button>
@@ -42,21 +42,21 @@
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
-      <Bitmap guid="guidImages" href="Resources\DaviSqlSsms.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
+      <Bitmap guid="guidImages" href="Resources\NaviSqlSsms.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
     </Bitmaps>
   </Commands>
   
   <KeyBindings>
-    <KeyBinding guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" editor="guidSqlQueryEditor" mod1="CONTROL SHIFT" key1="VK_RETURN" />
-    <!--<KeyBinding guid="guidDaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand1" editor="guidSqlQueryEditor" mod1="CONTROL SHIFT" key1="P" />-->
+    <KeyBinding guid="guidNaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand" editor="guidSqlQueryEditor" mod1="CONTROL SHIFT" key1="VK_RETURN" />
+    <!--<KeyBinding guid="guidNaviSqlSsmsPackageCmdSet" id="cmdidExecutorCommand1" editor="guidSqlQueryEditor" mod1="CONTROL SHIFT" key1="P" />-->
   </KeyBindings>
   
   <Symbols>
     <!-- This is the package guid. -->
-    <GuidSymbol name="guidDaviSqlSsmsPackage" value="{8f4cd0b0-9c7b-4b1d-8536-c8bf748e0ef1}" />
+    <GuidSymbol name="guidNaviSqlSsmsPackage" value="{8f4cd0b0-9c7b-4b1d-8536-c8bf748e0ef1}" />
 
     <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidDaviSqlSsmsPackageCmdSet" value="{fc414d62-d245-4820-8b28-e4378b61211b}">
+    <GuidSymbol name="guidNaviSqlSsmsPackageCmdSet" value="{fc414d62-d245-4820-8b28-e4378b61211b}">
       <IDSymbol name="TopLevelMenu" value="0x1101"/>
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="MyToolsMenuGroup" value="0x1021" />

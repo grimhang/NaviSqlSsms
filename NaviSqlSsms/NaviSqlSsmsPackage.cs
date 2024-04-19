@@ -7,7 +7,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using DaviSqlSsms.Properties;
+using NaviSqlSsms.Properties;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using Task = System.Threading.Tasks.Task;
 
-namespace DaviSqlSsms
+namespace NaviSqlSsms
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -37,10 +37,10 @@ namespace DaviSqlSsms
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(DaviSqlSsmsPackage.PackageGuidString)]
+    [Guid(NaviSqlSsmsPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     //[ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string, PackageAutoLoadFlags.BackgroundLoad)]
-    public sealed class DaviSqlSsmsPackage : AsyncPackage
+    public sealed class NaviSqlSsmsPackage : AsyncPackage
     {
         /// <summary>
         /// AssistMainPackage GUID string.
@@ -48,9 +48,9 @@ namespace DaviSqlSsms
         public const string PackageGuidString = "8f4cd0b0-9c7b-4b1d-8536-c8bf748e0ef1";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DaviSqlSsmsPackage"/> class.
+        /// Initializes a new instance of the <see cref="NaviSqlSsmsPackage"/> class.
         /// </summary>
-        public DaviSqlSsmsPackage()
+        public NaviSqlSsmsPackage()
         {
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but
@@ -80,12 +80,12 @@ namespace DaviSqlSsms
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await ExecutorCommand.InitializeAsync(this);
 
-            DaviSqlSsmsInit(); //초기화
+            NaviSqlSsmsInit(); //초기화
         }
 
         #endregion
 
-        private void DaviSqlSsmsInit()
+        private void NaviSqlSsmsInit()
         {
             string settingFolderPath = Resources.FolderPath;
             //폴더 생성

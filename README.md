@@ -1,4 +1,4 @@
-# DaviSql for SSMS
+# NaviSql for SSMS
 SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 
 

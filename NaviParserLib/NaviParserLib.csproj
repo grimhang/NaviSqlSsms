@@ -7,8 +7,8 @@
     <ProjectGuid>{41CD9742-016D-4F14-BCB8-906175A4AA1A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DaviParserLib</RootNamespace>
-    <AssemblyName>DaviParserLib</AssemblyName>
+    <RootNamespace>NaviParserLib</RootNamespace>
+    <AssemblyName>NaviParserLib</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -50,9 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DaviParser.cs" />
+    <Compile Include="NaviParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DaviTextPoint.cs" />
+    <Compile Include="NaviTextPoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />

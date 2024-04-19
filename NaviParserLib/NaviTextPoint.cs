@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DaviParserLib
+namespace NaviParserLib
 {
-    public class DaviTextPoint
+    public class NaviTextPoint
     {
         public int Line { get; set; }
         public int LineCharOffset { get; set; }
 
-        public DaviTextPoint()
+        public NaviTextPoint()
             : this(1, 1)
         {            
         }
@@ -25,7 +25,7 @@ namespace DaviParserLib
         }
         */
 
-        public DaviTextPoint(int line, int lineCharOffset)
+        public NaviTextPoint(int line, int lineCharOffset)
         {
             Line = line;
             LineCharOffset = lineCharOffset;
@@ -34,7 +34,7 @@ namespace DaviParserLib
 
     public class DaviTextBlock
     {
-        public DaviTextPoint StartPoint { get; set; }
-        public DaviTextPoint EndPoint { get; set; }
+        public NaviTextPoint StartPoint { get; set; }
+        public NaviTextPoint EndPoint { get; set; }
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DaviSqlSsms.Executor;
+using static NaviSqlSsms.Executor;
 
-namespace DaviSqlSsms
+namespace NaviSqlSsms
 {
-    public class DaviParserNotUse2
+    public class NaviParserNotUse2
     {
         public bool CustomParse(string script, VirtualPointNotuse2 caretPoint, ref VirtualPointNotuse2 startPoint, ref VirtualPointNotuse2 endPoint)
         {

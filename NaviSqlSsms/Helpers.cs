@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 
-namespace DaviSqlSsms
+namespace NaviSqlSsms
 {
     static class Helpers
     {

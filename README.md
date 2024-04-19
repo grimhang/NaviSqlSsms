@@ -1,5 +1,5 @@
 # NaviSql for SSMS
-SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
+SQL Server Management Studio (SSMS) 사용을 돕는 확장기능. **드뎌 V1.0런칭 ㅜ.ㅜ**
 
 
 # 기능
@@ -12,7 +12,7 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 - AutoFix Lang : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
 
 # 설치
-[Download](https://github.com/grimhang/DaviSqlSsms/releases/download/V0.9.9/DaviSqlSsms_V0.9.9.zip)
+[Download](https://github.com/grimhang/NaviSqlSsms/releases/download/V1.0/NaviSqlSsms_V1.0.zip)
            
     압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
     SSMS19 -> C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  

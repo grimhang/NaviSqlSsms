@@ -34,3 +34,5 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능.
 
     실시간으로 교정되는지 보려면 메뉴 / 보기 / 출력(Ctrl + Alt + O) 클릭 후에  
      출력 Windows의 드롭다운에서 DaviSql Ssms 선택.
+
+	 ss

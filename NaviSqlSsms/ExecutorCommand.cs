@@ -25,6 +25,7 @@ namespace NaviSqlSsms
 
         private const int cmdIdSelectExecuteStatement = 0x0100;
         private const int cmdIdImeAutoFix = 0x0101;
+        private const int cmdIdShowAboutWindow = 0x0102;
 
         private readonly AsyncPackage package;
         private static DTE2 dte;
@@ -116,6 +117,10 @@ namespace NaviSqlSsms
             //var menuItem = new MenuCommand(this.Execute, menuCommandID);
             menuCommand = new OleMenuCommand(this.Command_SelectStatement, menuCommandID);
             //menuCommand.BeforeQueryStatus += Command_QueryStatus;
+            commandService.AddCommand(menuCommand);
+
+            menuCommandID = new CommandID(CommandSet, cmdIdShowAboutWindow);
+            menuCommand = new OleMenuCommand(this.Command_ShowAboutWindow, menuCommandID);
             commandService.AddCommand(menuCommand);
         }
 
@@ -589,6 +594,16 @@ namespace NaviSqlSsms
                 var scope = GetScope(menuCommand.CommandID.ID);
 
                 executor.ExecuteStatement(scope);
+            }
+        }
+
+        private void Command_ShowAboutWindow(object sender, EventArgs e)
+        {
+            if (sender is OleMenuCommand menuCommand)
+            {
+                var aboutWindow = new About.AboutBox();
+
+                aboutWindow.Show();
             }
         }
 

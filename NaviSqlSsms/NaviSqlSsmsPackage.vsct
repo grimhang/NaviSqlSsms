@@ -14,7 +14,7 @@
       <Menu guid="guidNaviSqlSsmsPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS" />
         <Strings>
-          <ButtonText>NaviSqlSsms</ButtonText>
+          <ButtonText>NaviSql</ButtonText>
         </Strings>
       </Menu>
     </Menus>
@@ -36,6 +36,13 @@
         <Strings>
           <CommandName>NaviSqlSsms.ExecuteCurrentStatement</CommandName>
           <ButtonText>Easy Select Sql</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidNaviSqlSsmsPackageCmdSet" id="cmdIdShowAboutWindow" priority="0x0102" type="Button">
+        <Parent guid="guidNaviSqlSsmsPackageCmdSet" id="MyMenuGroup" />
+        <CommandFlag>TextOnly</CommandFlag>
+        <Strings>
+          <ButtonText>About</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -62,6 +69,7 @@
       <IDSymbol name="MyToolsMenuGroup" value="0x1021" />
       <IDSymbol name="cmdidExecutorCommand" value="0x0100" />
       <IDSymbol name="cmdIdImeAutoFix" value="0x0101" />
+      <IDSymbol name="cmdIdShowAboutWindow" value="0x0102" />
       
       <!--<IDSymbol name="cmdidExecutorCommand1" value="0x101" />-->
     </GuidSymbol>

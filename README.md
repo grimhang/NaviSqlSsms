@@ -12,7 +12,7 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능. **드뎌 V1.0
 - AutoFix Lang : 한글로 강제로 바뀌는 SSMS버그 수정. (20년을 고생)
 
 # 설치
-[Download](https://github.com/grimhang/NaviSqlSsms/releases/download/V1.0/NaviSqlSsms_V1.0.zip)
+[Download](https://github.com/grimhang/NaviSqlSsms/releases/download/V1.1/NaviSqlSsms_V1.1.zip)
            
     압축을 풀고 DaviSqlSsms 폴더를  다음 폴더에 붙여넣기  
     SSMS19 -> C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\  
@@ -35,4 +35,7 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능. **드뎌 V1.0
     실시간으로 교정되는지 보려면 메뉴 / 보기 / 출력(Ctrl + Alt + O) 클릭 후에  
      출력 Windows의 드롭다운에서 DaviSql Ssms 선택.
 
-	 
+#### 3. Foramt Query
+    보기좋게 Sql Query 재정렬.
+
+    

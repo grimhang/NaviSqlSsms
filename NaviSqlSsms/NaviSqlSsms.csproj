@@ -63,6 +63,8 @@
     <Compile Include="About\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commands\FormatQueryCommand.cs" />
+    <Compile Include="Modules\NaviSettingsManager.cs" />
     <Compile Include="NaviParserNotUse2.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="ExecutorCommand.cs" />
@@ -91,6 +93,7 @@
   <ItemGroup>
     <VSCTCompile Include="NaviSqlSsmsPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
     </VSCTCompile>
     <Content Include="Resources\butter.ico" />
     <Content Include="Resources\butter.jpg" />

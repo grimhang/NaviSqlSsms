@@ -81,6 +81,7 @@ namespace NaviSqlSsms
             await ExecutorCommand.InitializeAsync(this);
 
             NaviSqlSsmsInit(); //초기화
+            await NaviSqlSsms.Commands.FormatQueryCommand.InitializeAsync(this);
         }
 
         #endregion

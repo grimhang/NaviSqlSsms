@@ -61,6 +61,15 @@ namespace NaviSqlSsms.Properties {
         }
         
         /// <summary>
+        ///   Y과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ApplyAdditionalCodeFormatYn {
+            get {
+                return ResourceManager.GetString("ApplyAdditionalCodeFormatYn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   HanEngConfig.txt과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string ConfigFileName {

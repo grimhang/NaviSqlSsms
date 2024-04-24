@@ -88,7 +88,7 @@ namespace NaviSqlSsms
         private void NaviSqlSsmsInit()
         {
             string settingFolderPath = Resources.FolderPath;
-            //폴더 생성
+            
             if (!Directory.Exists(settingFolderPath))
             {
                 Directory.CreateDirectory(settingFolderPath);

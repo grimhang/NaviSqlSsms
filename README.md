@@ -37,6 +37,6 @@ SQL Server Management Studio (SSMS) 사용을 돕는 확장기능. **드뎌 V1.0
 
 #### 3. Foramt Query
     보기좋게 Sql Query 재정렬.   
-    쿼리 선택후 메뉴에서 NaviSqlSsms / Format Query 클릭
+    쿼리 선택후 메뉴에서 NaviSql / Format Query 클릭
 
     

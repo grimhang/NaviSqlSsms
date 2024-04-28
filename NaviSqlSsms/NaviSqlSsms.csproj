@@ -64,6 +64,7 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Commands\FormatQueryCommand.cs" />
+    <Compile Include="Commands\OwnVisitorNotUse2.cs" />
     <Compile Include="Modules\NaviSettingsManager.cs" />
     <Compile Include="NaviParserNotUse2.cs" />
     <Compile Include="Executor.cs" />

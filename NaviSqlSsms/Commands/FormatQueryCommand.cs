@@ -7,9 +7,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EnvDTE;
+using EnvDTE80;
+using Microsoft;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using NaviParserLib;
 using NaviSqlSsms.Modules;
 using Task = System.Threading.Tasks.Task;
 
@@ -18,7 +21,7 @@ namespace NaviSqlSsms.Commands
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class FormatQueryCommand
+    internal sealed partial class FormatQueryCommand
     {
         /// <summary>
         /// Command ID.
@@ -35,6 +38,7 @@ namespace NaviSqlSsms.Commands
         /// VS Package that provides this command, not null.
         /// </summary>
         private readonly AsyncPackage package;
+        private static DTE2 dte2;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FormatQueryCommand"/> class.
@@ -84,6 +88,9 @@ namespace NaviSqlSsms.Commands
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
             Instance = new FormatQueryCommand(package, commandService);
+
+            dte2 = await package.GetServiceAsync(typeof(DTE)) as DTE2;
+            Assumes.Present(dte2);
         }
 
         /// <summary>
@@ -95,28 +102,14 @@ namespace NaviSqlSsms.Commands
         /// <param name="e">Event args.</param>
         private void Execute(object sender, EventArgs e)
         {
-            //ThreadHelper.ThrowIfNotOnUIThread();
-            //string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            //string title = "FormatQueryCommand";
-
-            //// Show a message box to prove we were here
-            //VsShellUtilities.ShowMessageBox(
-            //    this.package,
-            //    message,
-            //    title,
-            //    OLEMSGICON.OLEMSGICON_INFO,
-            //    OLEMSGBUTTON.OLEMSGBUTTON_OK,
-            //    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-
             ThreadHelper.ThrowIfNotOnUIThread();
-            DTE dte = Package.GetGlobalService(typeof(DTE)) as DTE;
+            //DTE2 dte = Package.GetGlobalService(typeof(DTE)) as DTE2;
 
-            if (dte?.ActiveDocument != null)
+            if (dte2?.ActiveDocument != null)
             {
-
                 try
                 {
-                    TextSelection selection = dte.ActiveDocument.Selection as TextSelection;
+                    TextSelection selection = dte2.ActiveDocument.Selection as TextSelection;
 
                     string existingCommandText = selection.Text.Trim();
 
@@ -129,7 +122,7 @@ namespace NaviSqlSsms.Commands
                     }
 
                     // continue formatiing the entire document when nothing is selected                    
-                    TextDocument textDoc = dte.ActiveDocument.Object("TextDocument") as TextDocument;
+                    TextDocument textDoc = dte2.ActiveDocument.Object("TextDocument") as TextDocument;
                     if (textDoc != null)
                     {
                         existingCommandText = textDoc.CreateEditPoint(textDoc.StartPoint).GetText(textDoc.EndPoint).Trim();
@@ -149,7 +142,6 @@ namespace NaviSqlSsms.Commands
                 }
                 catch (Exception ex)
                 {
-
                     // Show a message box to prove we were here
                     VsShellUtilities.ShowMessageBox(
                         this.package,
@@ -158,96 +150,8 @@ namespace NaviSqlSsms.Commands
                         OLEMSGICON.OLEMSGICON_WARNING,
                         OLEMSGBUTTON.OLEMSGBUTTON_OK,
                         OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-
                 }
             }
-        }
-
-        class OwnVisitor : TSqlFragmentVisitor
-        {
-            public List<QualifiedJoin> QualifiedJoins = new List<QualifiedJoin>();
-            public List<UnqualifiedJoin> UnqualifiedJoins = new List<UnqualifiedJoin>();
-            public List<SearchedCaseExpression> CaseExpressions = new List<SearchedCaseExpression>();
-
-            public override void ExplicitVisit(QualifiedJoin node)
-            {
-                base.ExplicitVisit(node);
-
-                QualifiedJoins.Add(node);
-
-                // This is the source code from the Microsoft dll
-                //GenerateFragmentIfNotNull(node.FirstTableReference);
-
-                //GenerateNewLineOrSpace(_options.NewLineBeforeJoinClause);
-
-                //GenerateQualifiedJoinType(node.QualifiedJoinType);
-
-                //if (node.JoinHint != JoinHint.None)
-                //{
-                //    GenerateSpace();
-                //    JoinHintHelper.Instance.GenerateSourceForOption(_writer, node.JoinHint);
-                //}
-
-                //GenerateSpaceAndKeyword(TSqlTokenType.Join);
-
-                ////MarkClauseBodyAlignmentWhenNecessary(_options.NewlineBeforeJoinClause);
-
-                //NewLine(); 
-                //GenerateFragmentIfNotNull(node.SecondTableReference);
-
-                //NewLine();
-                //GenerateKeyword(TSqlTokenType.On);
-
-                //GenerateSpaceAndFragmentIfNotNull(node.SearchCondition);
-
-            }
-
-            public override void ExplicitVisit(UnqualifiedJoin node)
-            {
-                base.ExplicitVisit(node);
-
-                UnqualifiedJoins.Add(node);
-
-                // This is the source code from the Microsoft dll
-                //GenerateFragmentIfNotNull(node.FirstTableReference);
-
-                //List<TokenGenerator> generators = GetValueForEnumKey(_unqualifiedJoinTypeGenerators, node.UnqualifiedJoinType);
-                //if (generators != null)
-                //{
-                //    GenerateSpace();
-                //    GenerateTokenList(generators);
-                //}
-
-                //GenerateSpaceAndFragmentIfNotNull(node.SecondTableReference);
-            }
-
-            public override void ExplicitVisit(SearchedCaseExpression node)
-            {
-                base.ExplicitVisit(node);
-
-                CaseExpressions.Add(node);
-
-                // This is the source code from the Microsoft dll
-                //GenerateKeyword(TSqlTokenType.Case);
-
-                //GenerateSpaceAndFragmentIfNotNull(node.InputExpression);
-
-                //foreach (SimpleWhenClause when in node.WhenClauses)
-                //{
-                //    GenerateSpaceAndFragmentIfNotNull(when);
-                //}
-
-                //if (node.ElseExpression != null)
-                //{
-                //    GenerateSpaceAndKeyword(TSqlTokenType.Else);
-                //    GenerateSpaceAndFragmentIfNotNull(node.ElseExpression);
-                //}
-
-                //GenerateSpaceAndKeyword(TSqlTokenType.End);
-
-                //GenerateSpaceAndCollation(node.Collation);
-            }
-
         }
 
 
@@ -256,7 +160,6 @@ namespace NaviSqlSsms.Commands
             string resultCode = "";
 
             TSql160Parser sqlParser = new TSql160Parser(false);
-
             IList<ParseError> parseErrors = new List<ParseError>();
             TSqlFragment result = sqlParser.Parse(new StringReader(oldCode), out parseErrors);
 
@@ -291,7 +194,6 @@ namespace NaviSqlSsms.Commands
             }
 
             return resultCode;
-
         }
 
 
@@ -309,19 +211,19 @@ namespace NaviSqlSsms.Commands
             // special case #1 - remove new line after JOIN
             foreach (QualifiedJoin QJoin in visitor.QualifiedJoins)
             {
-
                 int NextTokenNumber = QJoin.SecondTableReference.FirstTokenIndex;
 
                 while (true)
                 {
-
                     TSqlParserToken NextToken = sqlFragment.ScriptTokenStream[NextTokenNumber - 1];
 
                     if (NextToken.TokenType == TSqlTokenType.WhiteSpace)
+                    {
                         if (NextToken.Text == "\r\n")
                             NextToken.Text = " ";
                         else if (NextToken.Text.Trim() == "")
                             NextToken.Text = "";
+                    }
 
                     if (NextToken.TokenType == TSqlTokenType.Join)
                         break;
@@ -331,20 +233,16 @@ namespace NaviSqlSsms.Commands
                     //just in case
                     if (NextTokenNumber < 0)
                         break;
-
                 }
-
             }
 
             //special case #2 - JOIN .. ON -> add a tab before ON
             foreach (QualifiedJoin QJoin in visitor.QualifiedJoins)
             {
-
                 int NextTokenNumber = QJoin.SearchCondition.FirstTokenIndex;
 
                 while (true)
                 {
-
                     TSqlParserToken NextToken = sqlFragment.ScriptTokenStream[NextTokenNumber];
 
                     if (NextToken.TokenType == TSqlTokenType.On)
@@ -356,7 +254,6 @@ namespace NaviSqlSsms.Commands
                             PreviousToken.Text = PreviousToken.Text + new string(' ', 4);
                             break;
                         }
-
                     }
 
                     NextTokenNumber -= 1;
@@ -364,7 +261,6 @@ namespace NaviSqlSsms.Commands
                     //just in case
                     if (NextTokenNumber < 0)
                         break;
-
                 }
             }
 
@@ -433,7 +329,6 @@ namespace NaviSqlSsms.Commands
                     //multi-line expression inside WHEN might be too far to the right, move it to the left
                     if (WhenIdent > 0 && WhenIdent != WC.StartColumn)
                     {
-
                         var FirshWhenToken = WC.FirstTokenIndex;
 
                         while (FirshWhenToken < WC.LastTokenIndex)
@@ -447,10 +342,7 @@ namespace NaviSqlSsms.Commands
 
                             FirshWhenToken += 1;
                         }
-
                     }
-
-
                 }
 
                 // add new line and spaces+8 before THEN
@@ -483,7 +375,6 @@ namespace NaviSqlSsms.Commands
                     //multi-line expression inside THEN might be too far to the right, move it to the left
                     if (ThenIdent > 0 && ThenIdent != WC.ThenExpression.StartColumn)
                     {
-
                         var FirshThenToken = WC.ThenExpression.FirstTokenIndex;
 
                         while (FirshThenToken < WC.ThenExpression.LastTokenIndex)
@@ -497,7 +388,6 @@ namespace NaviSqlSsms.Commands
 
                             FirshThenToken += 1;
                         }
-
                     }
                 }
 
@@ -505,7 +395,6 @@ namespace NaviSqlSsms.Commands
                 if (CaseExpr.ElseExpression != null)
                 {
                     int FirstTokenNumber = CaseExpr.ElseExpression.FirstTokenIndex - 3;
-
                     int ElseIdent = 0;
 
                     while (true)
@@ -543,9 +432,7 @@ namespace NaviSqlSsms.Commands
 
                             FirshWhenToken += 1;
                         }
-
                     }
-
                 }
 
                 // add new line and spaces before END
